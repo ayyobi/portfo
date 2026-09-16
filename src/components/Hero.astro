@@ -1,28 +1,36 @@
 ---
+import CodingPanda from './CodingPanda.astro';
 ---
 
 <section
 	class="relative flex min-h-[100svh] flex-col justify-between px-6 pt-32 pb-16 sm:px-10 lg:px-16"
 >
 	<div class="flex flex-1 flex-col justify-center">
-		<h1
-			data-reveal
-			class="font-display text-[17vw] leading-[0.86] font-medium tracking-tight sm:text-[13vw] lg:text-[10vw]"
-		>
-			Nargis
-			<br />
-			Ayyobi
-		</h1>
+		<div class="grid items-center gap-8 lg:grid-cols-2 lg:gap-12">
+			<div class="min-w-0">
+				<h1
+					data-reveal
+					class="font-display text-[17vw] leading-[0.86] font-medium tracking-tight sm:text-[13vw] lg:text-[10vw]"
+				>
+					Nargis
+					<br />
+					Ayyobi
+				</h1>
 
-		<p
-			data-reveal
-			style="--reveal-delay: 100ms"
-			class="font-display mt-6 text-2xl leading-tight sm:mt-10 sm:text-4xl lg:text-5xl"
-		>
-			Web Developer
-			<br />
-			&amp; Digital Designer
-		</p>
+				<p
+					data-reveal
+					style="--reveal-delay: 100ms"
+					class="font-display mt-6 text-2xl leading-tight sm:mt-10 sm:text-4xl lg:text-5xl"
+				>
+					Web Developer
+					<br />
+					&amp; Digital Designer
+				</p>
+			</div>
+			<div data-reveal style="--reveal-delay: 200ms" class="mx-auto w-full max-w-lg lg:max-w-none">
+				<CodingPanda />
+			</div>
+		</div>
 
 		<div
 			class="mt-10 flex flex-col gap-6 sm:mt-14 sm:flex-row sm:items-end sm:justify-between"
