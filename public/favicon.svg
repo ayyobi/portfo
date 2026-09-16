@@ -1,20 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-	<style>
-		.bg { fill: #f5f3ef; }
-		.fg { fill: #111110; }
-		@media (prefers-color-scheme: dark) {
-			.bg { fill: #111110; }
-			.fg { fill: #f5f3ef; }
-		}
-	</style>
-	<rect class="bg" width="64" height="64" rx="8" />
-	<text
-		x="32"
-		y="40"
-		text-anchor="middle"
-		font-family="Georgia, 'Times New Roman', serif"
-		font-size="26"
-		font-weight="600"
-		class="fg"
-	>NA</text>
+	<rect width="64" height="64" rx="10" fill="#f5f3ef" />
+	<ellipse cx="12" cy="31" rx="10" ry="16" transform="rotate(28 12 31)" fill="#111110" />
+	<ellipse cx="52" cy="31" rx="10" ry="16" transform="rotate(-28 52 31)" fill="#111110" />
+	<ellipse cx="15" cy="31.5" rx="3.2" ry="4.8" transform="rotate(28 15 31.5)" fill="#f5f3ef" />
+	<ellipse cx="49" cy="31.5" rx="3.2" ry="4.8" transform="rotate(-28 49 31.5)" fill="#f5f3ef" />
+	<path d="M26 45C26 42.8 28.7 41 32 41C35.3 41 38 42.8 38 45C38 47.5 35.3 50 32 50C28.7 50 26 47.5 26 45Z" fill="#111110" />
+	<path d="M32 50V53C29 56 26 57 24 55M32 53C35 56 38 57 40 55" stroke="#111110" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
 </svg>

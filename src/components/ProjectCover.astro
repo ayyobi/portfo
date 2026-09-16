@@ -29,12 +29,7 @@ const isLilac = tone === "lilac";
     <div
       class={`grain relative flex flex-col justify-between overflow-hidden p-6 ${isLilac ? "bg-lilac" : "bg-ink"} ${className}`}
     >
-      <div class="relative z-10 flex items-start justify-between">
-        <span
-          class={`text-sm font-semibold tracking-[0.2em] uppercase ${isLilac ? "text-ink" : "text-bg"}`}
-        >
-          {number}
-        </span>
+      <div class="relative z-10 flex justify-end">
         <span
           class={`h-2 w-2 rounded-full ${isLilac ? "bg-ink" : "bg-accent"}`}
         />
