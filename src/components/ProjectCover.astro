@@ -3,6 +3,7 @@ interface Props {
   number: string;
   name: string;
   image?: string;
+  images?: string[];
   class?: string;
   tone?: "ink" | "lilac";
 }
@@ -11,6 +12,7 @@ const {
   number,
   name,
   image,
+  images,
   class: className = "",
   tone = "ink",
 } = Astro.props;
@@ -19,12 +21,17 @@ const isLilac = tone === "lilac";
 
 {
   image ? (
-    <img
-      src={image}
-      alt={name}
-      loading="lazy"
-      class={`h-full w-full object-cover ${className}`}
-    />
+    <div class={`flex items-center justify-center gap-3 overflow-hidden bg-white p-4 sm:gap-8 sm:p-8 lg:p-12 ${className}`}>
+      {(images?.length ? images : [image]).map((src, index) => (
+        <img
+          src={src}
+          alt={images?.length ? `${name} — aperçu mobile ${index + 1}` : `Présentation du projet ${name}`}
+          loading="lazy"
+          decoding="async"
+          class="h-full min-w-0 flex-1 object-contain"
+        />
+      ))}
+    </div>
   ) : (
     <div
       class={`grain relative flex flex-col justify-between overflow-hidden p-6 ${isLilac ? "bg-lilac" : "bg-ink"} ${className}`}

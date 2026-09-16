@@ -27,21 +27,22 @@ const { project, index } = Astro.props;
       style="transform: translateY(var(--parallax-y, 0px))"
     >
       <div
-        class="transition-transform duration-700 ease-out will-change-transform group-hover:scale-[1.04]"
+        class="transition-transform duration-700 ease-out group-hover:scale-[1.01]"
       >
         <ProjectCover
           number={project.number}
           name={project.name}
           image={project.cover}
+          images={project.coverImages}
           tone={project.slug === "olyvia" ? "lilac" : "ink"}
-          class="aspect-[4/5] w-full sm:aspect-[16/9] lg:aspect-[21/9]"
+          class="aspect-[4/3] w-full sm:aspect-[16/9]"
         />
       </div>
       <span
         aria-hidden="true"
         class="pointer-events-none absolute right-6 bottom-6 flex translate-y-2 items-center gap-2 rounded-full bg-bg px-4 py-2 text-sm uppercase tracking-wide opacity-0 transition-all duration-400 ease-out group-hover:translate-y-0 group-hover:opacity-100"
       >
-        View project ↗
+        Voir le projet ↗
       </span>
     </div>
 
