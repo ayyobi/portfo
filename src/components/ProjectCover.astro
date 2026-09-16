@@ -1,0 +1,52 @@
+---
+interface Props {
+  number: string;
+  name: string;
+  image?: string;
+  class?: string;
+  tone?: "ink" | "lilac";
+}
+
+const {
+  number,
+  name,
+  image,
+  class: className = "",
+  tone = "ink",
+} = Astro.props;
+const isLilac = tone === "lilac";
+---
+
+{
+  image ? (
+    <img
+      src={image}
+      alt={name}
+      loading="lazy"
+      class={`h-full w-full object-cover ${className}`}
+    />
+  ) : (
+    <div
+      class={`grain relative flex flex-col justify-between overflow-hidden p-6 ${isLilac ? "bg-lilac" : "bg-ink"} ${className}`}
+    >
+      <div class="relative z-10 flex items-start justify-between">
+        <span
+          class={`text-sm font-semibold tracking-[0.2em] uppercase ${isLilac ? "text-ink" : "text-bg"}`}
+        >
+          {number}
+        </span>
+        <span
+          class={`h-2 w-2 rounded-full ${isLilac ? "bg-ink" : "bg-accent"}`}
+        />
+      </div>
+
+      <span
+        aria-hidden="true"
+        class="pointer-events-none absolute right-5 bottom-4 font-display text-[8rem] leading-none font-medium sm:right-8 sm:bottom-6 sm:text-[11rem]"
+        style={`-webkit-text-stroke: 1px color-mix(in srgb, var(${isLilac ? "--color-ink" : "--color-bg"}) 65%, transparent); color: transparent;`}
+      >
+        {number}
+      </span>
+    </div>
+  )
+}

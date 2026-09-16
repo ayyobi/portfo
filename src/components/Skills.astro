@@ -1,0 +1,53 @@
+---
+const categories = [
+	{
+		number: '01',
+		title: 'Development',
+		items: ['HTML', 'CSS', 'JavaScript', 'TypeScript', 'Astro', 'Tailwind CSS', 'PocketBase', 'SQL'],
+	},
+	{
+		number: '02',
+		title: 'Tools',
+		items: ['Git', 'GitHub', 'Figma'],
+	},
+	{
+		number: '03',
+		title: 'Design',
+		items: ['UI Design', 'UX Design', 'Responsive Design', 'Prototypage', 'Identité visuelle'],
+	},
+];
+---
+
+<section id="skills" class="px-6 py-24 sm:px-10 sm:py-32 lg:px-16">
+	<div
+		data-reveal
+		class="mb-16 flex items-end justify-between gap-6 sm:mb-24"
+	>
+		<h2 class="font-display text-5xl leading-none sm:text-7xl lg:text-8xl">
+			Skills
+		</h2>
+	</div>
+
+	<div class="grid grid-cols-1 gap-12 sm:grid-cols-3 sm:gap-8">
+		{
+			categories.map((category, index) => (
+				<div data-reveal style={`--reveal-delay: ${index * 100}ms`}>
+					<div class="mb-6 flex items-baseline gap-3">
+						<span class="font-display text-sm text-accent">{category.number}</span>
+						<h3 class="font-display text-2xl">{category.title}</h3>
+					</div>
+					<ul class="flex flex-col gap-1">
+						{category.items.map((item) => (
+							<li class="group w-fit">
+								<span class="relative text-lg text-ink/70 transition-colors duration-300 group-hover:text-ink">
+									{item}
+									<span class="absolute -bottom-0.5 left-0 h-px w-full origin-left scale-x-0 bg-accent transition-transform duration-300 group-hover:scale-x-100" />
+								</span>
+							</li>
+						))}
+					</ul>
+				</div>
+			))
+		}
+	</div>
+</section>

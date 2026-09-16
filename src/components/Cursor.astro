@@ -1,0 +1,79 @@
+<div id="custom-cursor" class="custom-cursor" aria-hidden="true">
+	<span class="custom-cursor-label">View</span>
+</div>
+
+<style>
+	.custom-cursor {
+		position: fixed;
+		top: 0;
+		left: 0;
+		z-index: 999;
+		display: none;
+		align-items: center;
+		justify-content: center;
+		width: 16px;
+		height: 16px;
+		margin-left: -8px;
+		margin-top: -8px;
+		border-radius: 9999px;
+		background: var(--color-ink);
+		color: var(--color-bg);
+		font-size: 0.7rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		pointer-events: none;
+		transition:
+			width 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+			height 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+			margin 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+		will-change: transform;
+	}
+
+	.custom-cursor.is-active {
+		display: flex;
+	}
+
+	.custom-cursor.is-hovering {
+		width: 72px;
+		height: 72px;
+		margin-left: -36px;
+		margin-top: -36px;
+	}
+
+	.custom-cursor-label {
+		opacity: 0;
+		transition: opacity 0.2s ease;
+	}
+
+	.custom-cursor.is-hovering .custom-cursor-label {
+		opacity: 1;
+	}
+
+	@media (hover: none), (pointer: coarse) {
+		.custom-cursor {
+			display: none !important;
+		}
+	}
+</style>
+
+<script>
+	const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+	if (!reduceMotion && canHover) {
+		const cursor = document.getElementById('custom-cursor');
+
+		if (cursor) {
+			cursor.classList.add('is-active');
+
+			window.addEventListener('pointermove', (event) => {
+				cursor.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0)`;
+			});
+
+			document.querySelectorAll('[data-cursor="view"]').forEach((el) => {
+				el.addEventListener('mouseenter', () => cursor.classList.add('is-hovering'));
+				el.addEventListener('mouseleave', () => cursor.classList.remove('is-hovering'));
+			});
+		}
+	}
+</script>

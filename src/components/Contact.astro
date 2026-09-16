@@ -1,0 +1,102 @@
+---
+// à remplacer par tes vraies informations
+const contact = {
+	email: 'ayyobinargis@gmail.com',
+	linkedin: undefined as string | undefined,
+	github: undefined as string | undefined,
+	cvUrl: undefined as string | undefined,
+};
+
+const socialLinks = [
+	{ label: 'LinkedIn', href: contact.linkedin },
+	{ label: 'GitHub', href: contact.github },
+];
+---
+
+<section id="contact" class="px-6 py-24 sm:px-10 sm:py-32 lg:px-16">
+	<p
+		data-reveal
+		class="mb-10 text-sm uppercase tracking-[0.2em] text-ink/60 sm:mb-16"
+	>
+		Contact
+	</p>
+
+	<h2
+		data-reveal
+		style="--reveal-delay: 100ms"
+		class="font-display text-6xl leading-[0.92] font-medium sm:text-8xl lg:text-9xl"
+	>
+		Let's
+		<br />
+		Work
+		<br />
+		Together.
+	</h2>
+
+	<p
+		data-reveal
+		style="--reveal-delay: 200ms"
+		class="mt-10 max-w-md text-lg text-ink/70 sm:text-xl"
+	>
+		Vous avez un projet, une opportunité de stage ou d'alternance ?
+		<br />
+		Contactez-moi.
+	</p>
+
+	<div
+		class="mt-16 flex flex-col gap-8 sm:mt-24 sm:flex-row sm:items-end sm:justify-between"
+	>
+		<ul class="flex flex-col gap-4">
+			<li data-reveal style="--reveal-delay: 300ms">
+				<a href={`mailto:${contact.email}`} class="group relative w-fit text-2xl sm:text-3xl">
+					{contact.email}
+					<span class="absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-ink transition-transform duration-300 group-hover:scale-x-100" />
+				</a>
+			</li>
+			{
+				socialLinks.map((link, index) => (
+					<li data-reveal style={`--reveal-delay: ${380 + index * 80}ms`}>
+						{link.href ? (
+							<a
+								href={link.href}
+								target="_blank"
+								rel="noreferrer"
+								class="group relative w-fit text-2xl sm:text-3xl"
+							>
+								{link.label}
+								<span class="absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-ink transition-transform duration-300 group-hover:scale-x-100" />
+							</a>
+						) : (
+							<span class="text-2xl text-ink/30 sm:text-3xl">{link.label} — à ajouter</span>
+						)}
+					</li>
+				))
+			}
+		</ul>
+
+		{
+			contact.cvUrl ? (
+				<a
+					data-reveal
+					style="--reveal-delay: 540ms"
+					href={contact.cvUrl}
+					download
+					class="group flex w-fit items-center gap-3 rounded-full border border-ink px-6 py-3 text-sm uppercase tracking-wide transition-colors duration-300 hover:bg-ink hover:text-bg"
+				>
+					Download CV
+					<span aria-hidden="true" class="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+						↗
+					</span>
+				</a>
+			) : (
+				<span
+					data-reveal
+					style="--reveal-delay: 540ms"
+					class="flex w-fit items-center gap-3 rounded-full border border-dashed border-ink/30 px-6 py-3 text-sm uppercase tracking-wide text-ink/40"
+				>
+					CV — à ajouter
+				</span>
+			)
+		}
+	</div>
+</section>

@@ -1,0 +1,174 @@
+---
+const links = [
+  { href: "/#work", label: "Work" },
+  { href: "/#about", label: "About" },
+  { href: "/#skills", label: "Skills" },
+  { href: "/#contact", label: "Contact" },
+];
+---
+
+<header
+  id="site-header"
+  class="fixed inset-x-0 top-0 z-50 transition-colors duration-300"
+  data-scrolled="false"
+>
+  <div
+    class="mx-auto flex max-w-[1600px] items-center justify-between px-6 py-5 sm:px-10 lg:px-16"
+  >
+    <a
+      href="/"
+      class="font-display text-lg font-medium tracking-tight sm:text-xl"
+    >
+      Nargis Ayyobi
+    </a>
+
+    <nav
+      class="hidden items-center gap-10 md:flex"
+      aria-label="Navigation principale"
+    >
+      {
+        links.map((link) => (
+          <a
+            href={link.href}
+            class="group relative text-sm uppercase tracking-wide"
+          >
+            {link.label}
+            <span class="absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-ink transition-transform duration-300 group-hover:scale-x-100" />
+          </a>
+        ))
+      }
+    </nav>
+
+    <button
+      id="menu-toggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+      aria-label="Ouvrir le menu"
+      class="relative z-50 flex h-10 w-10 items-center justify-center md:hidden"
+    >
+      <span class="menu-glyph relative block h-6 w-6" aria-hidden="true">
+        <span
+          class="menu-glyph-open absolute inset-0 flex items-center justify-center text-2xl leading-none"
+          >☰</span
+        >
+        <span
+          class="menu-glyph-close absolute inset-0 flex items-center justify-center text-2xl leading-none"
+          >×</span
+        >
+      </span>
+    </button>
+  </div>
+
+  <nav
+    id="mobile-menu"
+    aria-label="Navigation mobile"
+    class="fixed inset-0 z-40 flex -translate-y-4 flex-col items-center justify-center gap-8 bg-bg opacity-0 transition-all duration-300 ease-out md:hidden"
+    data-state="closed"
+  >
+    {
+      links.map((link) => (
+        <a href={link.href} class="mobile-menu-link font-display text-4xl">
+          {link.label}
+        </a>
+      ))
+    }
+  </nav>
+</header>
+
+<style>
+  #mobile-menu[data-state="closed"] {
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  #mobile-menu[data-state="open"] {
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  .menu-glyph-open,
+  .menu-glyph-close {
+    transition:
+      opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .menu-glyph-close {
+    opacity: 0;
+    transform: rotate(-45deg) scale(0.6);
+  }
+
+  #menu-toggle[aria-expanded="true"] .menu-glyph-open {
+    opacity: 0;
+    transform: rotate(45deg) scale(0.6);
+  }
+
+  #menu-toggle[aria-expanded="true"] .menu-glyph-close {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+  }
+
+  #site-header[data-scrolled="true"] {
+    background-color: color-mix(in srgb, var(--color-bg) 85%, transparent);
+    backdrop-filter: blur(8px);
+  }
+
+  @media (max-width: 767px) {
+    #site-header[data-scrolled="true"] {
+      backdrop-filter: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #mobile-menu,
+    .menu-glyph-open,
+    .menu-glyph-close {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const header = document.getElementById("site-header");
+  const toggle = document.getElementById("menu-toggle");
+  const menu = document.getElementById("mobile-menu");
+
+  const setScrolled = () => {
+    header?.setAttribute(
+      "data-scrolled",
+      window.scrollY > 8 ? "true" : "false",
+    );
+  };
+  setScrolled();
+  window.addEventListener("scroll", setScrolled, { passive: true });
+
+  const closeMenu = () => {
+    toggle?.setAttribute("aria-expanded", "false");
+    toggle?.setAttribute("aria-label", "Ouvrir le menu");
+    menu?.setAttribute("data-state", "closed");
+    document.body.style.overflow = "";
+  };
+
+  const openMenu = () => {
+    toggle?.setAttribute("aria-expanded", "true");
+    toggle?.setAttribute("aria-label", "Fermer le menu");
+    menu?.setAttribute("data-state", "open");
+    document.body.style.overflow = "hidden";
+  };
+
+  toggle?.addEventListener("click", () => {
+    const isOpen = toggle.getAttribute("aria-expanded") === "true";
+    isOpen ? closeMenu() : openMenu();
+  });
+
+  menu?.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", closeMenu);
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeMenu();
+  });
+</script>

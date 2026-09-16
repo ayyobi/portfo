@@ -1,0 +1,72 @@
+---
+import ProjectCover from "./ProjectCover.astro";
+import type { Project } from "../data/projects";
+
+interface Props {
+  project: Project;
+  index: number;
+}
+
+const { project, index } = Astro.props;
+---
+
+<li
+  data-reveal
+  style={`--reveal-delay: ${index * 100}ms`}
+  class="border-t border-ink/15 py-16 first:border-t-0 sm:py-24"
+>
+  <a
+    href={`/projects/${project.slug}`}
+    data-cursor="view"
+    aria-label={`Voir le projet ${project.name} — ${project.category}`}
+    class="group block"
+  >
+    <div
+      data-parallax
+      class="relative overflow-hidden rounded-sm"
+      style="transform: translateY(var(--parallax-y, 0px))"
+    >
+      <div
+        class="transition-transform duration-700 ease-out will-change-transform group-hover:scale-[1.04]"
+      >
+        <ProjectCover
+          number={project.number}
+          name={project.name}
+          image={project.cover}
+          tone={project.slug === "olyvia" ? "lilac" : "ink"}
+          class="aspect-[4/5] w-full sm:aspect-[16/9] lg:aspect-[21/9]"
+        />
+      </div>
+      <span
+        aria-hidden="true"
+        class="pointer-events-none absolute right-6 bottom-6 flex translate-y-2 items-center gap-2 rounded-full bg-bg px-4 py-2 text-sm uppercase tracking-wide opacity-0 transition-all duration-400 ease-out group-hover:translate-y-0 group-hover:opacity-100"
+      >
+        View project ↗
+      </span>
+    </div>
+
+    <div
+      class="mt-6 flex flex-col gap-2 sm:mt-8 sm:flex-row sm:items-baseline sm:justify-between"
+    >
+      <div class="flex items-baseline gap-4 sm:gap-6">
+        <span class="font-sans text-base font-semibold text-accent sm:text-lg">
+          {project.number}
+        </span>
+        <h3
+          class="font-display text-4xl transition-transform duration-500 ease-out group-hover:translate-x-2 sm:text-6xl lg:text-7xl"
+        >
+          {project.name}
+        </h3>
+      </div>
+
+      <div
+        class="flex flex-col gap-1 text-sm text-ink/60 sm:items-end sm:text-right"
+      >
+        <span>{project.category}</span>
+        <span class="text-ink/40"
+          >{project.year} — {project.tech.join(", ")}</span
+        >
+      </div>
+    </div>
+  </a>
+</li>
