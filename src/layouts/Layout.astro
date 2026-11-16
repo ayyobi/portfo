@@ -1,6 +1,8 @@
 ---
 import '../styles/global.css';
 import Cursor from '../components/Cursor.astro';
+import Loader from '../components/Loader.astro';
+import ScrollPanda from '../components/ScrollPanda.astro';
 
 interface Props {
 	title?: string;
@@ -37,6 +39,7 @@ const {
 		<title>{title}</title>
 	</head>
 	<body class="bg-bg text-ink antialiased">
+		<Loader />
 		<a
 			href="#top"
 			class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded focus:bg-ink focus:px-4 focus:py-2 focus:text-sm focus:text-bg"
@@ -44,11 +47,15 @@ const {
 			Aller au contenu
 		</a>
 		<slot />
+		<div class="ink-wave" data-wave aria-hidden="true"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><path d="" fill="#111111" /></svg></div>
+		<ScrollPanda />
 		<Cursor />
 	</body>
 </html>
 
 <script>
+	import '../scripts/motion';
+
 	const observer = new IntersectionObserver(
 		(entries) => {
 			for (const entry of entries) {
