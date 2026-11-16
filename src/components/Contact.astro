@@ -1,110 +1,276 @@
 ---
-// à remplacer par tes vraies informations
+// Contact en « ambiance code » : le formulaire est un objet JavaScript qu'on remplit,
+// et `send(message)` (jaune = action) ouvre la messagerie avec le message déjà écrit.
+// Derrière, une grille de points d'encre s'écarte sous la souris.
 const contact = {
-  email: "ayyobinargis@gmail.com",
-  linkedin: "https://www.linkedin.com/in/nargis-ayyobi",
-  github: "https://github.com/ayyobi",
-  cvUrl: `${import.meta.env.BASE_URL}Nargis-AYYOBI-CV.pdf`,
+	email: 'ayyobinargis@gmail.com',
+	linkedin: 'https://www.linkedin.com/in/nargis-ayyobi',
+	github: 'https://github.com/ayyobi',
+	cv: `${import.meta.env.BASE_URL}Nargis-AYYOBI-CV.pdf`,
 };
-
-const socialLinks = [
-  { label: "LinkedIn", href: contact.linkedin },
-  { label: "GitHub", href: contact.github },
-];
 ---
 
-<section id="contact" class="px-6 py-24 sm:px-10 sm:py-32 lg:px-16">
-  <p
-    data-reveal
-    class="mb-10 text-sm uppercase tracking-[0.2em] text-ink/60 sm:mb-16"
-  >
-    Contact
-  </p>
+<section id="contact" class="contact px-6 py-24 sm:px-10 lg:px-20">
+	<div class="dots" aria-hidden="true" data-dotgrid></div>
 
-  <h2
-    data-reveal
-    style="--reveal-delay: 100ms"
-    class="font-display text-5xl leading-[0.92] font-medium sm:text-8xl lg:text-9xl"
-  >
-    Créons
-    <br />
-    ensemble.
-  </h2>
+	<div class="relative">
+		<h2 data-split="words" class="mb-10 font-sans text-sm tracking-[0.12em] text-muted uppercase">Contact</h2>
+		<p data-split="chars" class="font-display text-3xl font-bold sm:text-[32px]">Créons ensemble.</p>
+		<p data-lines class="mt-4 text-sm text-muted">Un projet, une alternance ou un stage de 2 mois dès fin mars ? Écrivez-moi.</p>
 
-  <p
-    data-reveal
-    style="--reveal-delay: 200ms"
-    class="mt-10 max-w-md text-lg text-ink/70 sm:text-xl"
-  >
-    Vous avez un projet, une opportunité de stage ou d'alternance ?
-    <br />
-    Contactez-moi.
-  </p>
+		<form class="ide" data-contact data-to={contact.email} novalidate>
+			<p class="tab"><span>contact.js</span><span class="dot-row" aria-hidden="true"><i></i><i></i><i></i></span></p>
+			<div class="code">
+				<p class="l"><span class="k">const</span> message = {'{'}</p>
+				<p class="l field">
+					<label for="c-nom" class="key">nom:</label>
+					<span class="q" aria-hidden="true">"</span><input id="c-nom" name="nom" type="text" autocomplete="name" placeholder="Votre nom complet" required /><span class="q" aria-hidden="true">",</span>
+				</p>
+				<p class="l field">
+					<label for="c-email" class="key">email:</label>
+					<span class="q" aria-hidden="true">"</span><input id="c-email" name="email" type="email" autocomplete="email" placeholder="votre@email.com" required /><span class="q" aria-hidden="true">",</span>
+				</p>
+				<p class="l"><label for="c-msg" class="key">message:</label> <span class="q" aria-hidden="true">`</span></p>
+				<p class="l area"><textarea id="c-msg" name="message" rows="4" placeholder="Votre message…" required></textarea></p>
+				<p class="l"><span class="q" aria-hidden="true">`</span>,</p>
+				<p class="l">{'}'};</p>
+				<p class="l">&nbsp;</p>
+				<p class="l"><button type="submit" class="send">send(message)</button>; <span class="c">// ← ouvre votre messagerie</span></p>
+			</div>
+			<p class="console" aria-live="polite" data-console><span class="c">&gt;</span> en attente…</p>
+		</form>
 
-  <div
-    class="mt-16 flex flex-col gap-8 sm:mt-24 sm:flex-row sm:items-end sm:justify-between"
-  >
-    <ul class="flex flex-col gap-4">
-      <li data-reveal style="--reveal-delay: 300ms">
-        <a
-          href={`mailto:${contact.email}`}
-          class="group relative w-fit text-2xl sm:text-3xl"
-        >
-          {contact.email}
-          <span
-            class="absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-ink transition-transform duration-300 group-hover:scale-x-100"
-          ></span>
-        </a>
-      </li>
-      {
-        socialLinks.map((link, index) => (
-          <li data-reveal style={`--reveal-delay: ${380 + index * 80}ms`}>
-            {link.href ? (
-              <a
-                href={link.href}
-                target="_blank"
-                rel="noreferrer"
-                class="group relative w-fit text-2xl sm:text-3xl"
-              >
-                {link.label}
-                <span class="absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-ink transition-transform duration-300 group-hover:scale-x-100" />
-              </a>
-            ) : (
-              <span class="text-2xl text-ink/30 sm:text-3xl">
-                {link.label} — à ajouter
-              </span>
-            )}
-          </li>
-        ))
-      }
-    </ul>
-
-    {
-      contact.cvUrl ? (
-        <a
-          data-reveal
-          style="--reveal-delay: 540ms"
-          href={contact.cvUrl}
-          download="Nargis-AYYOBI-CV.pdf"
-          class="group flex w-fit items-center gap-3 rounded-full border border-ink px-6 py-3 text-sm uppercase tracking-wide transition-colors duration-300 hover:bg-ink hover:text-bg"
-        >
-          Télécharger mon CV
-          <span
-            aria-hidden="true"
-            class="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-          >
-            ↗
-          </span>
-        </a>
-      ) : (
-        <span
-          data-reveal
-          style="--reveal-delay: 540ms"
-          class="flex w-fit items-center gap-3 rounded-full border border-dashed border-ink/30 px-6 py-3 text-sm uppercase tracking-wide text-ink/40"
-        >
-          CV — à ajouter
-        </span>
-      )
-    }
-  </div>
+		<ul class="links">
+			<li><a href={`mailto:${contact.email}`} data-scramble>{contact.email}</a></li>
+			<li><a href={contact.linkedin} target="_blank" rel="noreferrer" data-scramble>LinkedIn</a></li>
+			<li><a href={contact.github} target="_blank" rel="noreferrer" data-scramble>GitHub</a></li>
+		</ul>
+		<a href={contact.cv} target="_blank" rel="noreferrer" class="cv">Télécharger mon CV <span aria-hidden="true">↗</span></a>
+	</div>
 </section>
+
+<style>
+	.contact {
+		position: relative;
+		overflow: hidden;
+	}
+	.dots {
+		position: absolute;
+		inset: 0;
+		pointer-events: none;
+	}
+	.dots :global(i) {
+		position: absolute;
+		width: 6px;
+		height: 8px;
+		border-radius: 50%;
+		background: #d9d3c7;
+		rotate: -28deg;
+	}
+	.ide {
+		position: relative;
+		margin-top: 2.5rem;
+		overflow: hidden;
+		border-radius: 12px;
+		background: var(--color-ink);
+		color: var(--color-bg);
+	}
+	.tab {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		background: var(--color-ink-2);
+		padding: 0.7rem 1rem;
+		font: 0.8rem var(--font-mono);
+		color: var(--color-sage);
+	}
+	.dot-row {
+		display: flex;
+		gap: 6px;
+	}
+	.dot-row i {
+		width: 8px;
+		height: 8px;
+		border-radius: 50%;
+		background: #77736d;
+	}
+	.code {
+		counter-reset: ln;
+		padding: 1.25rem 1rem 1.5rem 0;
+		font: 0.95rem/2.1 var(--font-mono);
+	}
+	.l {
+		display: flex;
+		align-items: baseline;
+		flex-wrap: wrap;
+		counter-increment: ln;
+		padding-left: 3.25rem;
+		position: relative;
+	}
+	.l::before {
+		content: counter(ln);
+		position: absolute;
+		left: 0;
+		width: 2.25rem;
+		text-align: right;
+		color: #77736d;
+	}
+	.field,
+	.area {
+		padding-left: 4.5rem;
+	}
+	.k {
+		color: var(--color-sage);
+		margin-right: 0.6ch;
+	}
+	.key {
+		min-width: 9ch;
+		color: var(--color-bg);
+	}
+	.area .key {
+		min-width: 0;
+	}
+	.q {
+		color: var(--color-beige);
+	}
+	.c {
+		color: #aaa69f;
+		margin-left: 0.6ch;
+	}
+	.field input,
+	.area textarea {
+		flex: 1;
+		min-width: 10ch;
+		max-width: 34rem;
+		border: 0;
+		border-bottom: 1px dashed #55534f;
+		background: transparent;
+		color: var(--color-beige);
+		font: inherit;
+		padding: 0 0.2rem;
+		caret-color: var(--color-sage);
+	}
+	.area textarea {
+		width: 100%;
+		max-width: 46rem;
+		resize: vertical;
+		line-height: 1.7;
+		border: 1px dashed #55534f;
+		border-radius: 6px;
+		padding: 0.4rem 0.6rem;
+	}
+	.field input::placeholder,
+	.area textarea::placeholder {
+		color: #77736d;
+	}
+	.field input:focus-visible,
+	.area textarea:focus-visible {
+		outline: none;
+		border-color: var(--color-sage);
+		background: #1c1c1a;
+	}
+	[aria-invalid='true'] {
+		border-color: #e5776b !important;
+	}
+	.send {
+		color: var(--color-yellow);
+		font: 600 1em var(--font-mono);
+		text-decoration: underline;
+		text-underline-offset: 3px;
+		cursor: pointer;
+	}
+	.send:hover,
+	.send:focus-visible {
+		background: var(--color-yellow);
+		color: var(--color-ink);
+		text-decoration: none;
+		outline: none;
+	}
+	.console {
+		border-top: 1px solid #2c2c2c;
+		background: #1a1a1a;
+		padding: 0.7rem 1rem;
+		font: 0.8rem var(--font-mono);
+		color: var(--color-sage);
+		min-height: 2.6rem;
+	}
+	.console :global(.err) {
+		color: #e5776b;
+	}
+	.links {
+		display: flex;
+		flex-direction: column;
+		gap: 0.9rem;
+		margin-top: 2rem;
+		border-top: 1px solid #e0dbd2;
+		padding-top: 1.5rem;
+		font-weight: 600;
+	}
+	.links a:hover {
+		text-decoration: underline;
+	}
+	.links a:focus-visible,
+	.cv:focus-visible {
+		outline: 2px solid var(--color-ink);
+		outline-offset: 3px;
+	}
+	.cv {
+		display: inline-flex;
+		gap: 0.6rem;
+		margin-top: 1.5rem;
+		border: 1.5px solid var(--color-ink);
+		border-radius: 999px;
+		background: var(--color-bg);
+		padding: 0.75rem 1.3rem;
+		font-size: 0.75rem;
+		font-weight: 600;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+	}
+	.cv:hover {
+		background: var(--color-ink);
+		color: var(--color-bg);
+	}
+	@media (max-width: 640px) {
+		.field,
+		.area {
+			padding-left: 3.25rem;
+		}
+		.code {
+			font-size: 0.82rem;
+		}
+	}
+</style>
+
+<script>
+	const form = document.querySelector<HTMLFormElement>('[data-contact]');
+	if (form) {
+		const out = form.querySelector<HTMLElement>('[data-console]')!;
+		const say = (html: string) => (out.innerHTML = html);
+		form.addEventListener('submit', (e) => {
+			e.preventDefault();
+			const fields = [...form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input, textarea')];
+			const bad = fields.filter((f) => !f.checkValidity());
+			fields.forEach((f) => f.setAttribute('aria-invalid', String(bad.includes(f))));
+			if (bad.length) {
+				const name = bad[0].name;
+				say(
+					bad[0].type === 'email' && bad[0].value
+						? `<span class="err">TypeError: message.email n’est pas une adresse valide.</span>`
+						: `<span class="err">Error: message.${name} est vide. Merci de remplir tous les champs.</span>`,
+				);
+				bad[0].focus();
+				return;
+			}
+			const data = new FormData(form);
+			say('&gt; send(message) … ✓ votre messagerie s’ouvre');
+			const subject = `Portfolio — message de ${data.get('nom')}`;
+			const body = `${data.get('message')}\n\n${data.get('nom')} · ${data.get('email')}`;
+			location.href = `mailto:${form.dataset.to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+		});
+		form.addEventListener('input', (e) => {
+			(e.target as HTMLElement).removeAttribute('aria-invalid');
+			say('<span class="c">&gt;</span> en train d’écrire…');
+		});
+	}
+</script>
