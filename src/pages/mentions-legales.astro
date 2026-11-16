@@ -1,0 +1,120 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const email = 'ayyobinargis@gmail.com';
+const sections = [
+	{
+		title: 'Édition du site',
+		lines: [
+			'Éditrice du site et responsable de la publication : Nargis Ayyobi, étudiante en BUT MMI.',
+			`Contact : ${email}. Site personnel, sans activité commerciale.`,
+		],
+	},
+	{
+		title: 'Hébergement',
+		lines: ['Hébergeur : [À compléter — nom de l’hébergeur].', 'Adresse et téléphone de l’hébergeur : [À compléter].'],
+	},
+	{
+		title: 'Propriété intellectuelle',
+		lines: [
+			'Les textes, visuels, créations et éléments graphiques présentés sur ce portfolio sont protégés par le droit de la propriété intellectuelle.',
+			'Toute reproduction, adaptation ou diffusion, totale ou partielle, nécessite l’autorisation préalable de la personne titulaire des droits.',
+		],
+	},
+	{
+		title: 'Données personnelles',
+		lines: [
+			'Responsable du traitement : Nargis Ayyobi.',
+			`Le formulaire de contact n’enregistre rien sur ce site : il ouvre votre propre messagerie avec votre message. Les e-mails reçus servent uniquement à vous répondre ; ils ne sont ni revendus ni transmis. Pour les consulter ou les supprimer : ${email}.`,
+		],
+	},
+	{
+		title: 'Cookies',
+		lines: [
+			'Ce site ne dépose aucun cookie publicitaire ni de mesure d’audience. Il garde seulement, le temps de votre visite, une information technique dans votre navigateur (l’écran de chargement a déjà été vu).',
+			'Aucun consentement n’est donc demandé à l’arrivée sur le site.',
+		],
+	},
+	{
+		title: 'Crédits',
+		lines: [
+			'Conception, direction artistique et développement : Nargis Ayyobi.',
+			'Typographies : Inter, Lora et IBM Plex Mono (licence SIL Open Font License). Projet OLYVIA réalisé en équipe : [À compléter — membres de l’équipe]. Visuels générés avec une IA : [À préciser].',
+		],
+	},
+];
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+
+<Layout title="Mentions légales — Nargis Ayyobi" description="Mentions légales du portfolio de Nargis Ayyobi.">
+	<Header />
+	<main id="top" class="px-6 pt-36 pb-24 sm:px-10 lg:px-32">
+		<div class="intro">
+			<i class="dash" aria-hidden="true"></i>
+			<p class="font-mono text-sm font-semibold text-muted">01 / INFORMATIONS</p>
+			<h1 class="mt-4 font-sans text-5xl font-bold sm:text-[64px]">Mentions légales</h1>
+			<p class="mt-4 text-lg text-muted sm:text-xl">Informations légales relatives au portfolio de Nargis Ayyobi.</p>
+		</div>
+
+		{
+			sections.map((s, i) => (
+				<section class="block" aria-labelledby={`ml-${i}`}>
+					<p class="num" aria-hidden="true">{pad(i + 1)}</p>
+					<div>
+						<h2 id={`ml-${i}`} class="font-sans text-3xl font-semibold sm:text-5xl">
+							{pad(i + 1)} — {s.title}
+						</h2>
+						{s.lines.map((l) => (
+							<p class="mt-4 max-w-[48rem] leading-relaxed">{l}</p>
+						))}
+					</div>
+				</section>
+			))
+		}
+	</main>
+	<Footer />
+</Layout>
+
+<style>
+	.intro {
+		position: relative;
+		padding-left: 0;
+		margin-bottom: 3rem;
+	}
+	@media (min-width: 1024px) {
+		.intro {
+			padding-left: 10rem;
+		}
+	}
+	.dash {
+		position: absolute;
+		left: 0;
+		top: -0.5rem;
+		width: 40px;
+		height: 3px;
+		background: var(--color-ink);
+	}
+	@media (max-width: 1023px) {
+		.dash {
+			display: none;
+		}
+	}
+	.block {
+		display: grid;
+		row-gap: 0.5rem;
+		border-top: 1px solid #ded9cf;
+		padding: 2.5rem 0;
+	}
+	@media (min-width: 1024px) {
+		.block {
+			grid-template-columns: 10rem minmax(0, 1fr);
+		}
+	}
+	.num {
+		font: 0.85rem var(--font-mono);
+		color: var(--color-muted);
+		padding-top: 0.75rem;
+	}
+</style>
