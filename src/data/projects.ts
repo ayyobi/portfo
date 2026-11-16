@@ -13,6 +13,8 @@ export interface Project {
 	name: string;
 	year: string;
 	category: string;
+	/** contenu de la fenêtre de code sur l’accueil */
+	card?: { type: string; goal: string; features: string[]; stack: string[] };
 	tech: string[];
 	skills: string[];
 	features: string[];
@@ -86,9 +88,10 @@ export const projects: Project[] = [
 			},
 		},
 		year: '2025',
+		card: { type: 'Application web éducative', goal: 'Apprendre la LSF aux enfants', features: ['Leçons', 'Quiz', 'Dictionnaire', 'Histoires', 'Mini-jeux'], stack: ['Astro', 'Tailwind', 'PocketBase'] },
 		category: 'Développement web · UI/UX · Accessibilité',
 		summary:
-			"ZOZZO est une application web éducative destinée aux enfants de 6 à 12 ans pour faciliter la découverte et l'apprentissage de la Langue des Signes Française (LSF). L'application utilise un univers graphique ludique et un personnage appelé Zozzo pour accompagner l'enfant pendant son apprentissage.",
+			"ZOZZO est une application web éducative destinée aux enfants de 6 à 12 ans pour faciliter la découverte et l’apprentissage de la Langue des Signes Française (LSF). L’application utilise un univers graphique ludique et un personnage appelé Zozzo pour accompagner l'enfant pendant son apprentissage.",
 		context:
 			"La Langue des Signes Française reste peu connue et peu enseignée aux enfants entendants. ZOZZO sensibilise dès le plus jeune âge à une communication plus inclusive entre enfants sourds, malentendants et entendants.",
 		audience:
@@ -96,11 +99,11 @@ export const projects: Project[] = [
 		problem:
 			'Comment rendre la découverte de la Langue des Signes Française accessible, ludique et motivante pour des enfants de 6 à 12 ans ?',
 		objective:
-			"Faciliter la découverte de la LSF grâce à une expérience progressive, ludique et adaptée au rythme d'apprentissage de chaque enfant.",
+			"Faciliter la découverte de la LSF grâce à une expérience progressive, ludique et adaptée au rythme d’apprentissage de chaque enfant.",
 		solution:
 			"Créer une application web qui mêle apprentissage et jeu : leçons, vidéos, histoires, quiz et mini-jeux permettent de découvrir progressivement les signes dans un univers accompagné par Zozzo.",
 		development:
-			"J'ai participé à la conception de l'expérience utilisateur, à la création de l'identité visuelle et au développement de l'interface de l'application, avec l'intégration de PocketBase pour les comptes, les scores et la progression.",
+			"J’ai participé à la conception de l’expérience utilisateur, à la création de l’identité visuelle et au développement de l’interface de l’application, avec l’intégration de PocketBase pour les comptes, les scores et la progression.",
 		tech: ['Astro', 'Tailwind CSS', 'PocketBase', 'JavaScript / TypeScript'],
 		skills: [
 			'Développement d’interfaces',
@@ -179,16 +182,17 @@ export const projects: Project[] = [
     }
   },
 		year: '2025',
-		category: 'Développement web · UX/UI',
+		card: { type: 'Application web', goal: 'Simplifier l’utilisation de la laverie CROUS', features: ['Réservation', 'Créneaux', 'Rappels', 'Lave-linge', 'Sèche-linge'], stack: ['Astro', 'Tailwind', 'PocketBase'] },
+		category: 'Développement web · UI/UX',
 		summary:
-			"WASHROLL est une application web imaginée pour faciliter l'utilisation des machines de laverie dans une résidence étudiante.",
-		audience: "Étudiants d'une résidence universitaire.",
+			'WASHROLL est une application web imaginée pour faciliter l’utilisation des machines de laverie dans une résidence étudiante. Sans elle, les étudiants descendent parfois jusqu’à la laverie pour découvrir que les machines sont déjà utilisées.',
+		audience: 'Étudiants d’une résidence universitaire.',
 		problem:
 			'Les étudiants peuvent descendre jusqu’à la laverie et découvrir que les machines sont déjà utilisées.',
 		objective:
 			'Permettre aux étudiants de consulter la disponibilité des machines et réserver un créneau à l’avance.',
 		tech: ['Astro', 'Tailwind CSS', 'PocketBase'],
-		skills: ['Développement web', 'UX/UI', 'Base de données', 'Interfaces adaptatives'],
+		skills: ['Développement web', 'UI/UX', 'Base de données', 'Interfaces adaptatives'],
 		features: [
 			'Connexion utilisateur',
 			'Consultation des machines',
@@ -198,7 +202,7 @@ export const projects: Project[] = [
 			'Historique des réservations',
 			'Gestion du temps / créneau',
 		],
-		role: 'Développement & conception UX/UI',
+		role: 'Développement & conception UI/UX',
 		liveUrl: 'https://washroll.ayyobi.fr',
 		githubUrl: 'https://github.com/ayyobi/washroll',
 	},
@@ -255,12 +259,14 @@ export const projects: Project[] = [
       "caption": "Le formulaire pour rejoindre la communauté."
     }
   },
+		card: { type: 'Plateforme web', goal: 'Informer et accompagner autour de la ménopause', features: ['Symptômes', 'Communauté Q/R', 'Articles', 'FAQ', 'Témoignages'], stack: ['WordPress', 'Figma'] },
 		year: '2025',
-		category: 'UI/UX · Identité visuelle',
-		summary: 'OLYVIA est un projet réalisé en équipe autour de la ménopause.',
+		category: 'UI/UX · Identité visuelle · projet d’équipe',
+		summary:
+			'OLYVIA est une plateforme web réalisée en équipe autour de la ménopause : informations sur les symptômes, articles, témoignages et un espace d’échange.',
 		audience: 'Femmes de 40 à 55 ans.',
 		objective:
-			"Créer une plateforme numérique permettant d'informer, accompagner et créer un espace d'échange destiné principalement aux femmes de 40 à 55 ans.",
+			'Informer, accompagner et créer un espace d’échange autour de la ménopause.',
 		tech: ['WordPress', 'Figma', 'Extensions WordPress', 'Outils de conception graphique'],
 		skills: [
 			'UI/UX',

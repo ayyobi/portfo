@@ -1,5 +1,6 @@
 ---
 import type { Project } from "../data/projects";
+import { caseStudies } from "../data/caseStudies";
 import ProjectImage from "./ProjectImage.astro";
 
 interface Props {
@@ -8,277 +9,398 @@ interface Props {
 }
 
 const { project, next } = Astro.props;
+const cs = caseStudies[project.slug];
 
-const links = [
-  { label: "Voir le site", href: project.liveUrl },
-  { label: "GitHub", href: project.githubUrl },
+// numérotation automatique des sections (gouttière « débug »)
+let n = 0;
+const num = () => String(++n).padStart(2, "0");
+
+// fiche projet écrite en code : liste de [texte, classe]
+const stack = project.tech.map((t) => `"${t}"`).join(", ");
+const codeTokens: [string, string][] = [
+  ["const", "k"], [" projet = {\n  rôle:  ", ""], [`"${project.role}"`, "s"],
+  [",\n  stack: [", ""], [stack, "s"], ["],\n};", ""],
 ];
+const words = project.summary.split(" ");
+const host = project.liveUrl?.replace(/^https?:\/\//, "") ?? "";
 ---
 
-<article>
-  <!-- Hero -->
-  <section
-    class="border-b border-ink/15 px-6 pt-32 pb-16 sm:px-10 sm:pt-40 sm:pb-24 lg:px-16"
-  >
-    <p data-reveal class="mb-6 text-sm uppercase tracking-[0.2em] text-ink/60">
-      {project.number} — {project.year}
-    </p>
-    <h1
-      data-reveal
-      style="--reveal-delay: 100ms"
-      class="font-display text-[clamp(2.5rem,12vw,3.75rem)] leading-[0.95] font-medium sm:text-8xl lg:text-9xl"
-    >
-      {project.name}
+<article class="cs" data-case-study>
+  <!-- 1. HERO : couverture révélée à l'encre + traînée de captures sous le curseur -->
+  <section class="hero" data-palette={JSON.stringify(cs?.palette ?? [])}>
+    <svg class="paint" aria-hidden="true"><defs><filter id="paint-goo"><feGaussianBlur in="SourceGraphic" stdDeviation="9" result="b" /><feColorMatrix in="b" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 24 -10" /></filter></defs><g filter="url(#paint-goo)" data-paint></g></svg>
+    <p class="mono meta" data-reveal>// projet {project.number} · {project.year} · {project.slug}.js</p>
+    <h1 class="title" data-reveal style="--reveal-delay:80ms">
+      {project.name}<span class="caret" aria-hidden="true"></span>
     </h1>
-
     {project.cover && (
-      <div class="mt-10 flex aspect-square items-center justify-center overflow-hidden rounded-sm bg-white p-4 sm:mt-12 sm:aspect-[16/9] sm:p-8">
-        <img
-          src={project.cover}
-          alt={`Couverture du projet ${project.name}`}
-          loading="eager"
-          decoding="async"
-          class="h-full w-full object-contain"
-        />
+      <figure class="ink-cover">
+        <svg viewBox="0 0 1280 600" role="img" aria-label={`Couverture du projet ${project.name}`}>
+          <defs>
+            <filter id="ink-goo" x="-10%" y="-10%" width="120%" height="120%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="2" seed="4" result="n" />
+              <feDisplacementMap in="SourceGraphic" in2="n" scale="40" result="d" />
+              <feGaussianBlur in="d" stdDeviation="10" />
+              <feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 26 -11" />
+            </filter>
+            <mask id="ink-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="1280" height="600">
+              <g filter="url(#ink-goo)" fill="#fff" data-ink-blobs></g>
+            </mask>
+          </defs>
+          <image href={project.cover} width="1280" height="600" preserveAspectRatio="xMidYMid slice" mask="url(#ink-mask)" />
+          <g fill="currentColor" data-ink-splats></g>
+        </svg>
+      </figure>
+    )}
+    {cs?.palette && (
+      <div class="pots mono">
+        <span class="hint">// peins avec les couleurs de l’affiche · clique pour éclabousser</span>
+        <span class="sw" role="group" aria-label="Couleurs de l’affiche">
+          {cs.palette.map((c) => <button type="button" class="pot" style={`--c:${c}`} data-color={c} aria-label={`Pinceau ${c}`} title={c}></button>)}
+          <button type="button" class="pot mix on" style={`--mix:conic-gradient(${cs.palette.map((c, i) => `${c} 0 ${Math.round(((i + 1) / cs.palette.length) * 100)}%`).join(", ")})`} data-color="" aria-label="Pinceau toutes les couleurs" title="mélange"></button>
+        </span>
       </div>
     )}
-
-    <dl
-      data-reveal
-      style="--reveal-delay: 200ms"
-      class="mt-12 grid grid-cols-2 gap-8 border-t border-ink/15 pt-8 sm:grid-cols-4"
-    >
-      <div>
-        <dt class="text-sm uppercase tracking-wide text-ink/50">Rôle</dt>
-        <dd class="mt-2 text-base">{project.role}</dd>
-      </div>
-      <div>
-        <dt class="text-sm uppercase tracking-wide text-ink/50">Année</dt>
-        <dd class="mt-2 text-base">{project.year}</dd>
-      </div>
-      <div class="col-span-2">
-        <dt class="text-sm uppercase tracking-wide text-ink/50">
-          Technologies
-        </dt>
-        <dd class="mt-2 text-base">{project.tech.join(", ")}</dd>
-      </div>
-    </dl>
   </section>
 
-  <!-- Introduction -->
-  <section class="border-b border-ink/15 px-6 py-16 sm:px-10 sm:py-24 lg:px-16">
-    <p data-reveal class="mb-8 text-sm uppercase tracking-[0.2em] text-ink/50">
-      Introduction
-    </p>
-    <p
-      data-reveal
-      style="--reveal-delay: 80ms"
-      class="max-w-3xl text-lg leading-relaxed text-ink/80 sm:text-xl"
-    >
-      {project.summary}
-    </p>
-  </section>
+  <div class="wrap">
+    <!-- 2. FICHE PROJET EN CODE (tapée au chargement) -->
+    <pre class="code" data-type={JSON.stringify(codeTokens)} aria-label={`Rôle : ${project.role}. Technologies : ${project.tech.join(", ")}.`}><span class="sr-only">const projet = rôle {project.role}, stack {project.tech.join(", ")}</span></pre>
 
-  {
-    project.images?.context && (
-      <section class="border-b border-ink/15 px-6 py-16 sm:px-10 sm:py-20 lg:px-16">
-        <p
-          data-reveal
-          class="mb-6 text-sm uppercase tracking-[0.2em] text-ink/50"
-        >
-          Contexte
-        </p>
-        {project.context && (
-          <p class="mb-8 max-w-2xl text-lg sm:text-xl">{project.context}</p>
-        )}
-        <ProjectImage image={project.images.context} />
-      </section>
-    )
-  }
+    <!-- 3. INTRODUCTION : révélée mot à mot au défilement -->
+    <section class="row">
+      <h2 class="lab"><i></i><span>{num()}</span> Introduction</h2>
+      <p class="txt" data-words>
+        {words.map((w) => <span class="w">{w} </span>)}
+      </p>
+    </section>
 
-  <!-- Public cible -->
-  <section class="border-b border-ink/15 px-6 py-16 sm:px-10 sm:py-24 lg:px-16">
-    <p data-reveal class="mb-8 text-sm uppercase tracking-[0.2em] text-ink/50">
-      Public cible
-    </p>
-    {
-      project.audience && (
-        <p
-          data-reveal
-          style="--reveal-delay: 80ms"
-          class="max-w-3xl text-lg leading-relaxed text-ink/80 sm:text-xl"
-        >
-          {project.audience}
-        </p>
-      )
-    }
-  </section>
 
-  <!-- Objectifs -->
-  <section class="border-b border-ink/15 px-6 py-16 sm:px-10 sm:py-20 lg:px-16">
-    <p data-reveal class="mb-6 text-sm uppercase tracking-[0.2em] text-ink/50">
-      Objectifs
-    </p>
-    {
-      project.images?.objectives?.length && (
-        <div class="mb-8 grid grid-cols-1 gap-8 sm:grid-cols-2">
-          {project.images.objectives.map((image) => (
-            <ProjectImage image={image} />
-          ))}
-        </div>
-      )
-    }
-    {project.objective && <p class="max-w-2xl text-lg">{project.objective}</p>}
-  </section>
-
-  {
-    project.solution && (
-      <section class="border-b border-ink/15 px-6 py-16 sm:px-10 sm:py-20 lg:px-16">
-        <p
-          data-reveal
-          class="mb-6 text-sm uppercase tracking-[0.2em] text-ink/50"
-        >
-          Solution
-        </p>
-        <p class="max-w-2xl text-lg sm:text-xl">{project.solution}</p>
-      </section>
-    )
-  }
-
-  {
-    project.images?.ui?.length && (
-      <section class="border-b border-ink/15 px-6 py-20 sm:px-10 sm:py-28 lg:px-16">
-        <p
-          data-reveal
-          class="mb-8 text-sm uppercase tracking-[0.2em] text-ink/50"
-        >
-          Conception des interfaces
-        </p>
-        <div
-          class:list={[
-            "mb-6 grid grid-cols-1 gap-8",
-            { "sm:grid-cols-2": project.images.ui.length > 1 },
-          ]}
-        >
-          {project.images.ui.map((image) => (
-            <ProjectImage image={image} />
-          ))}
+    {project.context && (
+      <section class="row">
+        <h2 class="lab"><i></i><span>{num()}</span> Contexte</h2>
+        <div>
+          <p class="txt">{project.context}</p>
+          {project.images?.context && <div class="ink-img"><ProjectImage image={project.images.context} /></div>}
         </div>
       </section>
-    )
-  }
+    )}
 
-  <!-- Fonctionnalités -->
-  <section class="border-b border-ink/15 px-6 py-16 sm:px-10 sm:py-20 lg:px-16">
-    <p data-reveal class="mb-8 text-sm uppercase tracking-[0.2em] text-ink/50">
-      Fonctionnalités
-    </p>
-    <ul class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-      {
-        project.features.map((feature) => (
-          <li class="border border-ink/15 px-5 py-4 text-base">{feature}</li>
-        ))
-      }
-    </ul>
-  </section>
-
-  {
-    project.development && (
-      <section class="border-b border-ink/15 px-6 py-16 sm:px-10 sm:py-20 lg:px-16">
-        <p
-          data-reveal
-          class="mb-6 text-sm uppercase tracking-[0.2em] text-ink/50"
-        >
-          Développement
-        </p>
-        <p class="max-w-2xl text-lg sm:text-xl">{project.development}</p>
-      </section>
-    )
-  }
-
-  <!-- Technologies -->
-  <section class="border-b border-ink/15 px-6 py-16 sm:px-10 sm:py-20 lg:px-16">
-    <p data-reveal class="mb-6 text-sm uppercase tracking-[0.2em] text-ink/50">
-      Technologies
-    </p>
-    <ul class="flex flex-wrap gap-2">
-      {
-        project.tech.map((tech) => (
-          <li class="rounded-full border border-ink/20 px-4 py-1.5 text-sm">
-            {tech}
-          </li>
-        ))
-      }
-    </ul>
-  </section>
-
-  {
-    project.images?.result && (
-      <section class="border-b border-ink/15 px-6 py-16 sm:px-10 sm:py-20 lg:px-16">
-        <p
-          data-reveal
-          class="mb-6 text-sm uppercase tracking-[0.2em] text-ink/50"
-        >
-          Résultat
-        </p>
-        <div class="mb-8">
-          <ProjectImage image={project.images.result} />
+    {project.audience && (
+      <section class="row">
+        <h2 class="lab"><i></i><span>{num()}</span> Public cible</h2>
+        <div>
+          <p class="txt">{project.audience}</p>
         </div>
       </section>
-    )
-  }
+    )}
 
-  <!-- Liens -->
-  <section class="border-b border-ink/15 px-6 py-16 sm:px-10 sm:py-20 lg:px-16">
-    <p data-reveal class="mb-8 text-sm uppercase tracking-[0.2em] text-ink/50">
-      Liens
-    </p>
-    <ul class="flex flex-wrap gap-x-10 gap-y-4">
-      {
-        links.map((link) =>
-          link.href ? (
-            <li>
-              <a
-                href={link.href}
-                target="_blank"
-                rel="noreferrer"
-                class="group relative w-fit text-xl sm:text-2xl"
-              >
-                {link.label}
-                <span class="absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-ink transition-transform duration-300 group-hover:scale-x-100" />
-              </a>
-            </li>
-          ) : (
-            <li class="text-xl text-ink/30 sm:text-2xl">
-              {link.label} — à ajouter
-            </li>
-          ),
-        )
-      }
-    </ul>
-  </section>
+    {project.objective && (
+      <section class="row">
+        <h2 class="lab"><i></i><span>{num()}</span> Objectifs</h2>
+        <div>
+          <p class="txt">{project.objective}</p>
+          {project.images?.objectives?.length ? (
+            <div class="grid2">{project.images.objectives.map((image) => <div class="ink-img"><ProjectImage image={image} /></div>)}</div>
+          ) : null}
+        </div>
+      </section>
+    )}
 
-  <!-- Projet suivant -->
-  <section class="px-6 py-24 sm:px-10 sm:py-32 lg:px-16">
-    <p data-reveal class="mb-6 text-sm uppercase tracking-[0.2em] text-ink/50">
-      Projet suivant
-    </p>
-    <a
-      href={`/projects/${next.slug}`}
-      data-cursor="view"
-      class="group flex items-end justify-between gap-3 sm:gap-6"
-    >
-      <h2
-        class="font-display text-4xl leading-none transition-transform duration-500 ease-out group-hover:translate-x-3 sm:text-7xl lg:text-8xl"
-      >
-        {next.name}
-      </h2>
-      <span
-        aria-hidden="true"
-        class="mb-2 text-3xl transition-transform duration-300 group-hover:translate-x-2 sm:text-4xl"
-      >
-        →
-      </span>
+    <!-- 4. LE SITE EN LIGNE -->
+    {cs && project.liveUrl && (
+      <section class="block">
+        <h2 class="lab"><i></i><span>{num()}</span> Le site en ligne</h2>
+        <div class="browser">
+          <div class="bar">
+            <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+            <a class="url mono" href={project.liveUrl} target="_blank" rel="noreferrer">{host}</a>
+          </div>
+          <div class="shot">
+            <img src={cs.live.src} alt={cs.live.alt} width="800" height="505" loading="lazy" decoding="async" />
+          </div>
+        </div>
+      </section>
+    )}
+
+    {project.images?.ui?.length ? (
+      <section class="block">
+        <h2 class="lab"><i></i><span>{num()}</span> Conception des interfaces</h2>
+        <div class:list={["grid2", { one: project.images.ui.length === 1 }]}>
+          {project.images.ui.map((image) => <div class="ink-img"><ProjectImage image={image} /></div>)}
+        </div>
+      </section>
+    ) : null}
+
+    <section class="row">
+      <h2 class="lab"><i></i><span>{num()}</span> Fonctionnalités</h2>
+      <ul class="chips">{project.features.map((f) => <li><i></i>{f}</li>)}</ul>
+    </section>
+
+    {project.development && (
+      <section class="row">
+        <h2 class="lab"><i></i><span>{num()}</span> Développement</h2>
+        <p class="txt">{project.development}</p>
+      </section>
+    )}
+
+    {project.images?.result && (
+      <section class="block">
+        <h2 class="lab"><i></i><span>{num()}</span> Résultat</h2>
+        <div class="ink-img"><ProjectImage image={project.images.result} /></div>
+      </section>
+    )}
+
+    <section class="row">
+      <h2 class="lab"><i></i><span>{num()}</span> Liens</h2>
+      <div class="links">
+        {project.liveUrl && <a class="btn run" href={project.liveUrl} target="_blank" rel="noreferrer">{project.slug}.run() → voir le site</a>}
+        {project.githubUrl && <a class="btn ghost" href={project.githubUrl} target="_blank" rel="noreferrer">git clone · GitHub</a>}
+      </div>
+    </section>
+
+    <a class="next" href={`/projects/${next.slug}`}>
+      <span class="mono"><span class="k">import</span> {"{"} {next.slug} {"}"} from './projets';</span>
+      <span class="nn">{next.name}<span aria-hidden="true">→</span></span>
     </a>
-  </section>
+  </div>
 </article>
+
+<style>
+  .cs { --sage:#a5ae8b; --yellow:#fbc832; --beige:#e8e1d6; --muted:#65615a; --ink:#111110; }
+  .mono { font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+  .hero { position: relative; padding: 8rem 1.5rem 2rem; overflow: hidden; }
+  @media (min-width: 640px) { .hero { padding: 10rem 2.5rem 2rem; } }
+  @media (min-width: 1024px) { .hero { padding-inline: 4rem; } }
+  .meta { font-size: .8rem; color: var(--muted); margin-bottom: .75rem; }
+  .title { font-family: var(--font-display); font-size: clamp(3rem, 11vw, 8rem); line-height: .95; display: flex; align-items: flex-end; gap: .15em; position: relative; z-index: 3; }
+  .caret { display: inline-block; width: .5em; height: .22em; margin-bottom: .14em; border-radius: 50%; background: var(--ink); animation: blink 1.1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .ink-cover { margin-top: 2rem; color: var(--ink); }
+  .ink-cover svg { display: block; width: 100%; height: auto; }
+  .hint { font-size: .75rem; color: var(--muted); margin-top: .5rem; }
+  .paint { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; overflow: visible; }
+  .pots { position: relative; z-index: 3; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .75rem; margin-top: .75rem; }
+  .pots .hint { margin: 0; }
+  .sw { display: flex; gap: .5rem; }
+  .pot { width: 22px; height: 28px; border-radius: 50%; background: var(--c); rotate: -28deg; transition: transform .25s; cursor: pointer; }
+  .pot.mix { background: var(--mix); }
+  .pot:hover, .pot.on { transform: scale(1.3); }
+  .pot.on { outline: 2px solid var(--ink); outline-offset: 3px; }
+
+  .wrap { padding: 0 1.5rem 4rem; max-width: 1280px; }
+  @media (min-width: 640px) { .wrap { padding-inline: 2.5rem; } }
+  @media (min-width: 1024px) { .wrap { padding-inline: 4rem; } }
+  .code { background: var(--ink); color: #f7f4ee; border-radius: 12px; padding: 1.25rem 1.5rem; font: .9rem/1.8 "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace; min-height: 9.5rem; white-space: pre-wrap; margin-bottom: 1rem; }
+  .code :global(.k) { color: var(--sage); } .code :global(.s) { color: var(--beige); } .code :global(.y) { color: var(--yellow); }
+  .code :global(.cur) { display: inline-block; width: .6em; height: .3em; background: #f7f4ee; border-radius: 50%; animation: blink 1.1s steps(1) infinite; }
+
+  .row, .block { border-top: 1px solid rgb(17 17 16 / .15); padding: 3rem 0; }
+  @media (min-width: 900px) { .row { display: grid; grid-template-columns: 17.5rem minmax(0, 40rem); gap: 4rem; } }
+  .lab { display: flex; align-items: center; gap: .6rem; font: 500 .75rem/1 ui-monospace, Menlo, monospace; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.25rem; height: 1.2rem; }
+  .lab i { width: 8px; height: 10px; border-radius: 50%; background: var(--ink); rotate: -28deg; }
+  .lab span { font-weight: 400; }
+  .txt { font-size: 1.125rem; line-height: 1.65; max-width: 40rem; }
+  [data-words] .w { transition: color .35s; color: #cfc8bb; }
+  [data-words] .w.on { color: var(--ink); }
+
+
+  .chips { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1rem; }
+  .chips li { display: inline-flex; align-items: center; gap: .6rem; background: var(--beige); border-radius: 999px; padding: .5rem 1rem; font-size: .95rem; }
+  .chips i { width: 8px; height: 10px; border-radius: 50%; background: var(--ink); rotate: -28deg; }
+
+  .btn { display: inline-flex; align-items: center; border-radius: 999px; padding: .6rem 1.1rem; font: 500 .9rem ui-monospace, Menlo, monospace; cursor: pointer; transition: transform .2s; }
+  .btn:hover { transform: translateY(-2px); }
+  .btn:focus-visible, .next:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+  .btn.run { background: var(--yellow); color: var(--ink); }
+  .btn.ghost { border: 1px solid var(--ink); }
+  .grid2 { display: grid; gap: 2rem; margin-top: 2rem; }
+  @media (min-width: 640px) { .grid2 { grid-template-columns: 1fr 1fr; } .grid2.one { grid-template-columns: 1fr; } }
+
+  .browser { background: var(--ink); border-radius: 14px; overflow: hidden; }
+  .bar { display: flex; align-items: center; gap: 1rem; padding: .6rem 1rem; background: #262626; }
+  .dots { display: flex; gap: 6px; } .dots i { width: 10px; height: 10px; border-radius: 50%; background: #55534f; }
+  .url { flex: 1; max-width: 26rem; background: #111; color: var(--beige); border-radius: 999px; padding: .3rem .9rem; font-size: .8rem; }
+  .url:hover { color: var(--yellow); }
+  .shot { position: relative; }
+  .shot img { display: block; width: 100%; height: auto; }
+
+
+  .links { display: flex; flex-wrap: wrap; gap: .75rem; }
+  .next { display: block; margin-top: 3rem; background: var(--beige); border-radius: 16px; padding: 2rem 2.5rem; }
+  .next .mono { font-size: .9rem; color: var(--muted); } .next .k { color: #6b7350; }
+  .next .nn { display: flex; justify-content: space-between; align-items: center; font-family: var(--font-display); font-size: clamp(2.5rem, 7vw, 5.5rem); line-height: 1.1; margin-top: .5rem; transition: transform .4s; }
+  .next:hover .nn { transform: translateX(.5rem); }
+
+  .ink-img > :global(figure) { clip-path: circle(0% at 30% 40%); transition: clip-path 1.1s cubic-bezier(.65,0,.35,1); }
+  .ink-img.on > :global(figure) { clip-path: circle(150% at 30% 40%); }
+  @media (prefers-reduced-motion: reduce) {
+    .caret, .code :global(.cur) { animation: none; }
+    .ink-img > :global(figure) { clip-path: none; transition: none; }
+    [data-words] .w { color: var(--ink); }
+    .paint { display: none; }
+  }
+</style>
+
+<script>
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const NS = "http://www.w3.org/2000/svg";
+  const onVisible = (el: Element, fn: () => void, threshold = 0.25) => {
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) if (e.isIntersecting) { fn(); io.disconnect(); }
+    }, { threshold });
+    io.observe(el);
+  };
+
+  // 1. Couverture : l'encre s'étale et révèle l'image
+  const blobs = document.querySelector("[data-ink-blobs]");
+  const splats = document.querySelector("[data-ink-splats]");
+  if (blobs) {
+    const drops: [SVGCircleElement, number][] = [];
+    for (let i = 0; i < 22; i++) {
+      const c = document.createElementNS(NS, "circle");
+      const a = (i / 22) * Math.PI * 2;
+      const ring = i % 2 ? 0.85 : 0.55;
+      c.setAttribute("cx", String(640 + Math.cos(a) * 520 * ring));
+      c.setAttribute("cy", String(300 + Math.sin(a) * 230 * ring));
+      c.setAttribute("r", "0");
+      blobs.appendChild(c);
+      drops.push([c, 150 + ((i * 37) % 70)]);
+    }
+    const core = document.createElementNS(NS, "ellipse");
+    core.setAttribute("cx", "640"); core.setAttribute("cy", "300");
+    blobs.appendChild(core);
+    for (const [x, y, r] of [[60, 50, 9], [1220, 70, 6], [1240, 540, 12], [40, 520, 6], [1150, 25, 4], [700, 585, 5]]) {
+      const s = document.createElementNS(NS, "circle");
+      s.setAttribute("cx", String(x)); s.setAttribute("cy", String(y)); s.setAttribute("r", String(r));
+      splats?.appendChild(s);
+    }
+    const start = performance.now();
+    const grow = (now: number) => {
+      const p = reduce ? 1 : Math.min(1, Math.max(0, (now - start) / 1800));
+      const e = 1 - Math.pow(1 - p, 3);
+      drops.forEach(([c, r], i) => c.setAttribute("r", String(r * Math.max(0, Math.min(1, e * 1.4 - i * 0.015)))));
+      core.setAttribute("rx", String(520 * e)); core.setAttribute("ry", String(220 * e));
+      if (p < 1) requestAnimationFrame(grow);
+    };
+    requestAnimationFrame(grow);
+  }
+
+  // 2. Pinceau d'encre aux couleurs de l'affiche : les gouttes fusionnent, coulent puis sèchent.
+  //    Clic = éclaboussure. Les pastilles choisissent la couleur.
+  const hero = document.querySelector<HTMLElement>(".hero");
+  const layer = document.querySelector<SVGGElement>("[data-paint]");
+  const palette: string[] = hero ? JSON.parse(hero.dataset.palette || "[]") : [];
+  if (hero && layer && palette.length && !reduce) {
+    type Drop = { el: SVGCircleElement; x: number; y: number; r: number; max: number; vx: number; vy: number; age: number; life: number };
+    const drops: Drop[] = [];
+    let brush = "", k = 0, lx = -999, ly = -999, running = false;
+    const pick = () => brush || palette[Math.floor(k++ / 7) % palette.length];
+    const add = (x: number, y: number, max: number, color: string, vx = 0, vy = 0, life = 1.6) => {
+      const el = document.createElementNS(NS, "circle");
+      el.setAttribute("fill", color);
+      layer.appendChild(el);
+      drops.push({ el, x, y, r: 0, max, vx, vy, age: 0, life });
+      if (drops.length > 90) drops.shift()!.el.remove();
+      if (!running) { running = true; requestAnimationFrame(loop); }
+    };
+    let last = performance.now();
+    const loop = (now: number) => {
+      const dt = Math.min(0.05, (now - last) / 1000); last = now;
+      for (let i = drops.length - 1; i >= 0; i--) {
+        const d = drops[i];
+        d.age += dt;
+        const t = d.age / d.life;
+        d.vy += 260 * dt * Math.min(1, t * 1.5);   // l'encre coule vers le bas
+        d.vx *= 0.92; d.x += d.vx * dt; d.y += d.vy * dt * 0.25;
+        d.r = t < 0.15 ? d.max * (t / 0.15) : d.max * Math.max(0, 1 - (t - 0.15) / 0.85) ** 0.7;
+        d.el.setAttribute("cx", d.x.toFixed(1)); d.el.setAttribute("cy", d.y.toFixed(1)); d.el.setAttribute("r", d.r.toFixed(1));
+        if (t >= 1) { d.el.remove(); drops.splice(i, 1); }
+      }
+      if (drops.length) requestAnimationFrame(loop); else running = false;
+    };
+    const pos = (e: PointerEvent) => { const r = hero.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
+    hero.addEventListener("pointermove", (e) => {
+      const [x, y] = pos(e);
+      const dist = Math.hypot(x - lx, y - ly);
+      if (dist < 14) return;
+      const speed = Math.min(1, dist / 60);
+      lx = x; ly = y;
+      add(x, y, 16 + speed * 22 + Math.random() * 8, pick());
+    });
+    hero.addEventListener("pointerdown", (e) => {
+      if ((e.target as HTMLElement).closest("button, a")) return;
+      const [x, y] = pos(e);
+      const c = pick();
+      add(x, y, 70, c, 0, 0, 2.4);
+      for (let i = 0; i < 12; i++) {
+        const a = Math.random() * Math.PI * 2, v = 250 + Math.random() * 450;
+        add(x, y, 6 + Math.random() * 14, i % 3 ? c : pick(), Math.cos(a) * v, Math.sin(a) * v * 2, 1.4 + Math.random());
+      }
+    });
+    // la tache-curseur du titre goutte de temps en temps, aux couleurs de l'affiche
+    const caretEl = hero.querySelector<HTMLElement>(".caret");
+    let ci = 0;
+    setInterval(() => {
+      if (!caretEl || document.hidden) return;
+      const r = caretEl.getBoundingClientRect(), h = hero.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > innerHeight) return;
+      add(r.left - h.left + r.width / 2, r.bottom - h.top, 13, brush || palette[ci++ % palette.length], 0, 40, 2.2);
+    }, 1800);
+    hero.querySelectorAll<HTMLButtonElement>(".pot").forEach((b) => b.addEventListener("click", () => {
+      brush = b.dataset.color || "";
+      hero.querySelectorAll(".pot").forEach((o) => o.classList.toggle("on", o === b));
+      const r = b.getBoundingClientRect(), h = hero.getBoundingClientRect();
+      add(r.left - h.left + r.width / 2, r.top - h.top - 10, 30, pick(), 0, -300, 1.2);
+    }));
+  }
+
+  // 3. Fiche projet tapée comme du code
+  const code = document.querySelector<HTMLElement>("pre.code[data-type]");
+  if (code) {
+    const tokens: [string, string][] = JSON.parse(code.dataset.type || "[]");
+    const sr = code.querySelector(".sr-only");
+    const visual = document.createElement("span");
+    visual.setAttribute("aria-hidden", "true");
+    code.appendChild(visual);
+    const caret = document.createElement("span");
+    caret.className = "cur";
+    const write = () => {
+      if (reduce) {
+        for (const [t, c] of tokens) { const s = document.createElement("span"); s.className = c; s.textContent = t; visual.appendChild(s); }
+        visual.appendChild(caret);
+        return;
+      }
+      let ti = 0, ci = 0, span: HTMLSpanElement | null = null;
+      const tick = () => {
+        if (ti >= tokens.length) return;
+        const [t, c] = tokens[ti];
+        if (ci === 0) { span = document.createElement("span"); span.className = c; visual.appendChild(span); }
+        span!.textContent += t[ci++];
+        visual.appendChild(caret);
+        if (ci >= t.length) { ti++; ci = 0; }
+        setTimeout(tick, 14 + Math.random() * 22);
+      };
+      tick();
+    };
+    if (sr) sr.classList.add("sr-only");
+    onVisible(code, write);
+  }
+
+  // 4. Introduction révélée mot à mot pendant le défilement
+  const wordsEl = document.querySelector<HTMLElement>("[data-words]");
+  if (wordsEl) {
+    const ws = [...wordsEl.querySelectorAll(".w")];
+    const update = () => {
+      const r = wordsEl.getBoundingClientRect();
+      const p = Math.min(1, Math.max(0, (innerHeight * 0.85 - r.top) / (r.height + innerHeight * 0.35)));
+      const count = reduce ? ws.length : Math.round(p * ws.length);
+      ws.forEach((w, i) => w.classList.toggle("on", i < count));
+    };
+    addEventListener("scroll", () => requestAnimationFrame(update), { passive: true });
+    update();
+  }
+
+  // 8. Images révélées à l'encre quand elles arrivent à l'écran
+  document.querySelectorAll(".ink-img").forEach((el) => onVisible(el, () => el.classList.add("on"), 0.2));
+</script>

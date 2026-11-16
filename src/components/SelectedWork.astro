@@ -3,16 +3,9 @@ import ProjectCard from './ProjectCard.astro';
 import { projects } from '../data/projects';
 ---
 
-<section id="work" class="px-6 py-24 sm:px-10 sm:py-32 lg:px-16">
-	<div data-reveal class="mb-16 sm:mb-24">
-		<h2 class="font-display text-5xl leading-none sm:text-7xl lg:text-8xl">
-			Mes
-			<br />
-			projets
-		</h2>
-	</div>
-
-	<ul>
-		{projects.map((project, index) => <ProjectCard project={project} index={index} />)}
+<section id="work" class="px-6 py-24 sm:px-10 lg:px-20">
+	<h2 data-split="chars" class="mb-16 font-display text-3xl font-bold sm:text-[32px]">Mes projets</h2>
+	<ul class="flex flex-col gap-16 lg:gap-24">
+		{projects.map((project, index) => <ProjectCard project={project} index={index} total={projects.length} />)}
 	</ul>
 </section>

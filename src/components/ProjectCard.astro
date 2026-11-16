@@ -1,70 +1,273 @@
 ---
-import ProjectCover from "./ProjectCover.astro";
-import type { Project } from "../data/projects";
+// Carte projet en fenêtre de code : le code s'écrit tout seul quand la carte arrive à l'écran,
+// survoler une feature y pose une tache, et `slug.run()` (jaune = action) répand l'encre
+// sur la capture puis ouvre l'étude de cas.
+import type { Project } from '../data/projects';
 
 interface Props {
-  project: Project;
-  index: number;
+	project: Project;
+	index: number;
+	total: number;
 }
 
-const { project, index } = Astro.props;
+const { project, index, total } = Astro.props;
+const card = project.card!;
+const pad = (n: number) => String(n).padStart(2, '0');
+const q = (t: string) => `"${t}"`;
+const featA = card.features.slice(0, 3);
+const featB = card.features.slice(3);
+const href = `/projects/${project.slug}`;
 ---
 
-<li
-  data-reveal
-  style={`--reveal-delay: ${index * 100}ms`}
-  class="border-t border-ink/15 py-16 first:border-t-0 sm:py-24"
->
-  <a
-    href={`/projects/${project.slug}`}
-    data-cursor="view"
-    aria-label={`Voir le projet ${project.name} — ${project.category}`}
-    class="group block"
-  >
-    <div
-      data-parallax
-      class="relative overflow-hidden rounded-sm"
-      style="transform: translateY(var(--parallax-y, 0px))"
-    >
-      <div
-        class="transition-transform duration-700 ease-out group-hover:scale-[1.01]"
-      >
-        <ProjectCover
-          number={project.number}
-          name={project.name}
-          image={project.cover}
-          images={project.coverImages}
-          tone={project.slug === "olyvia" ? "lilac" : "ink"}
-          class="aspect-[4/3] w-full sm:aspect-[16/9]"
-        />
-      </div>
-      <span
-        aria-hidden="true"
-        class="pointer-events-none absolute right-6 bottom-6 flex translate-y-2 items-center gap-2 rounded-full bg-bg px-4 py-2 text-sm uppercase tracking-wide opacity-0 transition-all duration-400 ease-out group-hover:translate-y-0 group-hover:opacity-100"
-      >
-        Voir le projet ↗
-      </span>
-    </div>
+<li data-reveal style={`--reveal-delay:${index * 80}ms`}>
+	<article class="win" aria-labelledby={`p-${project.slug}`}>
+		<header class="bar">
+			<span class="flex items-center gap-3">
+				<svg class="panda" viewBox="0 0 24 24" aria-hidden="true">
+					<circle cx="5" cy="5.5" r="3.6" fill="#111" /><circle cx="19" cy="5.5" r="3.6" fill="#111" />
+					<circle cx="12" cy="13" r="9.4" fill="#fff" stroke="#111" stroke-width="1.4" />
+					<ellipse cx="8.4" cy="12" rx="2.4" ry="3.2" transform="rotate(28 8.4 12)" fill="#111" />
+					<ellipse cx="15.6" cy="12" rx="2.4" ry="3.2" transform="rotate(-28 15.6 12)" fill="#111" />
+					<circle cx="8.9" cy="11.6" r=".9" fill="#fff" /><circle cx="15.1" cy="11.6" r=".9" fill="#fff" />
+					<ellipse cx="12" cy="16.6" rx="1.7" ry="1.1" fill="#111" />
+				</svg>
+				<span class="file">{project.slug}.js</span>
+			</span>
+			<span class="count">{pad(index + 1)} / {pad(total)}</span>
+		</header>
 
-    <div
-      class="mt-6 flex flex-col gap-2 sm:mt-8 sm:flex-row sm:items-baseline sm:justify-between"
-    >
-      <div>
-        <h3
-          class="font-display text-4xl transition-transform duration-500 ease-out group-hover:translate-x-2 sm:text-6xl lg:text-7xl"
-        >
-          {project.name}
-        </h3>
-      </div>
+		<div class="body">
+			<pre class="code" data-code><code><span class="l"><span class="k">const</span> {project.slug} = {'{'}</span>
+<span class="l">  type:     <span class="s">{q(card.type)}</span>,</span>
+<span class="l">  objectif: <span class="s">{q(card.goal)}</span>,</span>
+<span class="l">  features: [</span>
+<span class="l">    {featA.map((f, i) => <><span class="s feat">{q(f)}</span>{i < featA.length - 1 || featB.length ? ', ' : ''}</>)}</span>
+<span class="l">    {featB.map((f, i) => <><span class="s feat">{q(f)}</span>{i < featB.length - 1 ? ', ' : ','}</>)}</span>
+<span class="l">  ],</span>
+<span class="l">  stack:    [<span class="s">{card.stack.map(q).join(', ')}</span>],</span>
+<span class="l">{'}'};</span>
+<span class="l"> </span>
+<span class="l"><a class="run" href={href} data-run>{project.slug}.run()</a>;  <span class="c">// ← clique pour lancer</span></span></code></pre>
 
-      <div
-        class="flex flex-col gap-1 text-sm text-ink/60 sm:items-end sm:text-right"
-      >
-        <span>{project.category}</span>
-        <span class="text-ink/40"
-          >{project.year} — {project.tech.join(", ")}</span
-        >
-      </div>
-    </div>
-  </a>
+			<a href={href} class="shot" data-shot data-tilt data-img-reveal tabindex="-1" aria-hidden="true">
+				{project.cover && <img src={project.cover} alt="" loading="lazy" decoding="async" data-parallax-img />}
+				<svg class="ink" viewBox="0 0 100 64" preserveAspectRatio="xMidYMid slice"><g data-ink fill="#111"></g></svg>
+			</a>
+		</div>
+
+		<footer class="foot">
+			<span class="flex flex-wrap items-baseline gap-x-5 gap-y-1">
+				<h3 id={`p-${project.slug}`} class="name">{project.name}</h3>
+				<span class="meta">{project.category}</span>
+				<span class="meta">{project.year}</span>
+			</span>
+			<a href={href} class="case">Voir l’étude de cas <span aria-hidden="true">→</span></a>
+		</footer>
+	</article>
 </li>
+
+<style>
+	.win {
+		overflow: hidden;
+		border-radius: 12px;
+		background: var(--color-ink);
+		color: var(--color-bg);
+	}
+	.bar,
+	.foot {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		background: var(--color-ink-2);
+		padding: 0.75rem 1.25rem;
+	}
+	.panda {
+		width: 26px;
+		height: 26px;
+	}
+	.file {
+		font: 0.8rem var(--font-mono);
+		color: var(--color-sage);
+	}
+	.count {
+		font: 0.75rem var(--font-mono);
+		color: #aaa69f;
+	}
+	.body {
+		display: grid;
+		gap: 1.5rem;
+		padding: 1.75rem 1.25rem;
+		align-items: center;
+	}
+	@media (min-width: 1024px) {
+		.body {
+			grid-template-columns: minmax(0, 1fr) minmax(0, 480px);
+			padding: 1.75rem 1.25rem 1.75rem 1.25rem;
+		}
+	}
+	.code {
+		font: clamp(0.62rem, 2.55vw, 0.9rem)/1.95 var(--font-mono);
+		counter-reset: ln;
+		overflow-x: auto;
+		white-space: pre;
+	}
+	.l {
+		display: inline-block;
+		counter-increment: ln;
+	}
+	.l::before {
+		content: counter(ln);
+		display: inline-block;
+		width: 2.5em;
+		color: #77736d;
+	}
+	.k {
+		color: var(--color-sage);
+	}
+	.c {
+		color: #aaa69f;
+	}
+	.feat {
+		position: relative;
+		z-index: 0;
+		cursor: default;
+		transition: color 0.2s;
+	}
+	.feat::before {
+		content: '';
+		position: absolute;
+		z-index: -1;
+		inset: -0.15em -0.35em;
+		border-radius: 46% 54% 42% 58% / 60% 44% 56% 40%;
+		background: var(--color-bg);
+		transform: scale(0.2) rotate(-6deg);
+		opacity: 0;
+		transition: transform 0.35s cubic-bezier(0.3, 1.5, 0.5, 1), opacity 0.2s;
+	}
+	.feat:hover {
+		color: var(--color-ink);
+	}
+	.feat:hover::before {
+		transform: none;
+		opacity: 1;
+	}
+	.run {
+		color: var(--color-yellow);
+		font-weight: 600;
+		text-decoration: underline;
+		text-underline-offset: 3px;
+	}
+	.run:hover {
+		background: var(--color-yellow);
+		color: var(--color-ink);
+		text-decoration: none;
+	}
+	.run:focus-visible,
+	.case:focus-visible {
+		outline: 2px solid var(--color-yellow);
+		outline-offset: 3px;
+	}
+	.shot {
+		position: relative;
+		display: block;
+		overflow: hidden;
+		border-radius: 8px;
+		aspect-ratio: 480 / 308;
+		background: var(--color-ink-2);
+	}
+	.shot img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+	.ink {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		pointer-events: none;
+	}
+	.name {
+		font: 600 0.9rem var(--font-mono);
+		letter-spacing: 0.02em;
+	}
+	.meta {
+		font-size: 0.8rem;
+		color: #aaa69f;
+	}
+	.case {
+		flex-shrink: 0;
+		font-size: 0.85rem;
+	}
+	.case:hover {
+		text-decoration: underline;
+	}
+	/* frappe automatique : chaque ligne est dévoilée de gauche à droite */
+	:global(.typing) .l {
+		clip-path: inset(0 100% 0 0);
+	}
+</style>
+
+<script>
+	const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+	const NS = 'http://www.w3.org/2000/svg';
+
+	document.querySelectorAll<HTMLElement>('.win').forEach((win) => {
+		const code = win.querySelector<HTMLElement>('[data-code]')!;
+		const lines = [...code.querySelectorAll<HTMLElement>('.l')];
+
+		// 1. le code s'écrit quand la carte arrive à l'écran
+		if (!reduce) {
+			code.classList.add('typing');
+			const io = new IntersectionObserver(([e]) => {
+				if (!e.isIntersecting) return;
+				io.disconnect();
+				let i = 0;
+				const next = () => {
+					const l = lines[i];
+					if (!l) return code.classList.remove('typing');
+					const chars = Math.max(1, l.textContent!.length + 3);
+					let n = 0;
+					const step = () => {
+						n += 2;
+						const p = Math.min(1, n / chars);
+						l.style.clipPath = `inset(0 ${100 - p * 100}% 0 0)`;
+						if (p < 1) setTimeout(step, 14);
+						else { l.style.clipPath = 'none'; i++; setTimeout(next, 40); }
+					};
+					step();
+				};
+				next();
+			}, { threshold: 0.35 });
+			io.observe(win);
+		}
+
+		// 2. run() : l'encre se répand sur la capture, puis on ouvre l'étude de cas
+		const run = win.querySelector<HTMLAnchorElement>('[data-run]');
+		const ink = win.querySelector<SVGGElement>('[data-ink]');
+		run?.addEventListener('click', (e) => {
+			if (reduce || !ink || e.metaKey || e.ctrlKey) return;
+			e.preventDefault();
+			ink.innerHTML = '';
+			const drops: [SVGCircleElement, number][] = [];
+			for (let k = 0; k < 9; k++) {
+				const c = document.createElementNS(NS, 'circle');
+				c.setAttribute('cx', String(20 + Math.random() * 60));
+				c.setAttribute('cy', String(12 + Math.random() * 40));
+				c.setAttribute('r', '0');
+				ink.appendChild(c);
+				drops.push([c, 18 + Math.random() * 30]);
+			}
+			const t0 = performance.now();
+			const grow = (now: number) => {
+				const p = Math.min(1, (now - t0) / 650);
+				const e2 = 1 - Math.pow(1 - p, 3);
+				drops.forEach(([c, r], k) => c.setAttribute('r', String(r * Math.max(0, e2 * 1.3 - k * 0.03))));
+				if (p < 1) requestAnimationFrame(grow);
+				else location.href = run.href;
+			};
+			requestAnimationFrame(grow);
+		});
+	});
+</script>

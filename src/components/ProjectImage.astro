@@ -8,7 +8,7 @@ interface Props {
 const { image } = Astro.props;
 ---
 
-<figure class:list={[
+<figure data-tilt class:list={[
 	'mx-auto min-w-0 w-full',
 	{ 'max-w-[240px]': image.presentation === 'mobile',
 	  'max-w-[420px]': image.presentation === 'page',
