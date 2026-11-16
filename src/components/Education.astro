@@ -1,54 +1,160 @@
-<section id="education" class="px-6 py-24 sm:px-10 sm:py-32 lg:px-16">
-	<p
-		data-reveal
-		class="mb-10 text-sm uppercase tracking-[0.2em] text-ink/60 sm:mb-16"
-	>
-		Études
-	</p>
+---
+// Études racontées comme un `git log --graph` : chaque diplôme est un commit,
+// le dernier, en pointillés, reste à écrire et mène au contact.
+const commits = [
+	{
+		hash: 'a3f2c1e',
+		head: true,
+		date: 'sept. 2025 — en cours · 2ᵉ année',
+		title: 'BUT MMI',
+		sub: 'Métiers du Multimédia et de l’Internet',
+		place: 'IUT Nord Franche-Comté, Montbéliard',
+		msg: 'feat: développement web, design, communication digitale, gestion de projet',
+	},
+	{
+		hash: '7b9e04d',
+		date: '2023',
+		title: 'Développeur Web et Web Mobile',
+		sub: 'Titre professionnel · Bac +2',
+		place: 'Lons-le-Saunier',
+		msg: 'feat: premiers sites en HTML, CSS, JavaScript',
+	},
+	{
+		hash: 'c1d8aa0',
+		date: '2020 — 2023',
+		title: 'Baccalauréat général',
+		place: 'Kaboul, Afghanistan',
+		msg: 'init: premier commit',
+	},
+];
+---
 
-	<div data-reveal style="--reveal-delay: 100ms" class="flex flex-col gap-4">
-		<h2 class="font-display text-4xl leading-tight sm:text-6xl lg:text-7xl">
-			BUT MMI
-		</h2>
-		<p class="text-lg text-ink/70">Métiers du Multimédia et de l'Internet</p>
+<section id="education" class="px-6 py-24 sm:px-10 lg:px-20">
+	<h2 data-split="words" class="mb-10 font-sans text-sm tracking-[0.12em] text-muted uppercase">Études</h2>
+	<p class="cmd font-mono text-[13px] text-muted">$ git log --graph nargis/etudes</p>
 
-		<div
-			class="mt-6 flex flex-col gap-2 border-t border-ink/15 pt-6 text-sm text-ink/50 sm:flex-row sm:items-baseline sm:justify-between"
-		>
-			<span>IUT Nord Franche-Comté, Montbéliard</span>
-			<span>2023 — 2026 · En cours</span>
-		</div>
-
-		<p class="text-sm text-ink/50">
-			Formation pluridisciplinaire autour du développement web, du design,
-			de la communication digitale et de la gestion de projet.
-		</p>
-	</div>
-
-	<div data-reveal style="--reveal-delay: 200ms" class="mt-16 flex flex-col gap-4">
-		<h3 class="font-display text-4xl leading-tight sm:text-6xl lg:text-7xl">
-			Développeur Web et Web Mobile
-		</h3>
-		<p class="text-lg text-ink/70">Titre professionnel · Bac +2</p>
-
-		<div
-			class="mt-6 flex flex-col gap-2 border-t border-ink/15 pt-6 text-sm text-ink/50 sm:flex-row sm:items-baseline sm:justify-between"
-		>
-			<span>Lons-le-Saunier</span>
-			<span>2023</span>
-		</div>
-	</div>
-
-	<div data-reveal style="--reveal-delay: 300ms" class="mt-16 flex flex-col gap-4">
-		<h3 class="font-display text-4xl leading-tight sm:text-6xl lg:text-7xl">
-			Baccalauréat général
-		</h3>
-
-		<div
-			class="mt-6 flex flex-col gap-2 border-t border-ink/15 pt-6 text-sm text-ink/50 sm:flex-row sm:items-baseline sm:justify-between"
-		>
-			<span>Kaboul, Afghanistan</span>
-			<span>2020 — 2023</span>
-		</div>
-	</div>
+	<ol class="log">
+		{
+			commits.map((c, i) => (
+				<li data-reveal style={`--reveal-delay:${i * 80}ms`} class="commit">
+					<i class="dot" aria-hidden="true" />
+					<p class="meta">
+						<span>{c.hash}</span>
+						{c.head && <span class="head">HEAD → main</span>}
+						<span>{c.date}</span>
+					</p>
+					<h3 class="title">{c.title}</h3>
+					{c.sub && <p class="sub">{c.sub}</p>}
+					<p class="place">{c.place}</p>
+					<p class="msg">{c.msg}</p>
+				</li>
+			))
+		}
+		<li data-reveal class="commit next">
+			<i class="dot" aria-hidden="true" />
+			<p class="meta">
+				<span>???????</span>
+				<span>dès fin mars</span>
+			</p>
+			<h3 class="title">Ton entreprise ?</h3>
+			<p class="sub">Alternance, ou stage de 2 mois</p>
+			<p class="msg dark">next: le prochain commit reste à écrire <a href="#contact">→ me contacter</a></p>
+		</li>
+	</ol>
 </section>
+
+<style>
+	.cmd {
+		margin-bottom: 1.5rem;
+	}
+	.log {
+		position: relative;
+	}
+	.commit {
+		position: relative;
+		padding: 0 0 2.5rem 3rem;
+	}
+	/* la ligne du graphe */
+	.commit::before {
+		content: '';
+		position: absolute;
+		left: 10px;
+		top: 0.6rem;
+		bottom: -0.6rem;
+		width: 2px;
+		background: var(--color-ink);
+	}
+	.commit:nth-last-child(2)::before {
+		background: #a7a39b;
+	}
+	.commit.next::before {
+		display: none;
+	}
+	.dot {
+		position: absolute;
+		left: 2px;
+		top: 0.05rem;
+		width: 18px;
+		height: 22px;
+		border-radius: 50%;
+		background: var(--color-ink);
+		rotate: 20deg;
+	}
+	.next .dot {
+		background: var(--color-bg);
+		border: 1.5px dashed var(--color-ink);
+		width: 16px;
+		height: 18px;
+		left: 3px;
+	}
+	.meta {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.75rem;
+		font: 0.8rem var(--font-mono);
+		color: var(--color-muted);
+	}
+	.head {
+		border-radius: 4px;
+		background: var(--color-beige);
+		padding: 0.1rem 0.45rem;
+		font-size: 0.7rem;
+		font-weight: 500;
+		color: var(--color-ink);
+	}
+	.title {
+		margin-top: 0.35rem;
+		font-family: var(--font-display);
+		font-size: clamp(1.7rem, 3vw, 2.125rem);
+		font-weight: 700;
+		line-height: 1.2;
+	}
+	.next .title {
+		color: var(--color-muted);
+	}
+	.sub {
+		margin-top: 0.4rem;
+		font-size: 1.05rem;
+	}
+	.place {
+		margin-top: 0.15rem;
+		font-size: 0.95rem;
+		color: var(--color-muted);
+	}
+	.msg {
+		margin-top: 0.35rem;
+		font: 0.8rem var(--font-mono);
+		color: var(--color-muted);
+	}
+	.msg.dark {
+		color: var(--color-ink);
+	}
+	.msg a {
+		text-decoration: underline;
+		text-underline-offset: 3px;
+	}
+	.msg a:hover {
+		background: var(--color-yellow);
+	}
+</style>
