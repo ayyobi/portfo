@@ -7,11 +7,14 @@ import ScrollPanda from '../components/layout/ScrollPanda.astro';
 interface Props {
 	title?: string;
 	description?: string;
+	/** image à charger en priorité (couverture d'une page projet) */
+	preload?: string;
 }
 
 const {
 	title = 'Nargis Ayyobi — Développeuse web et conceptrice numérique',
 	description = "Portfolio de Nargis Ayyobi, étudiante en BUT MMI. Développement web, UI/UX et design d'expériences interactives.",
+	preload,
 } = Astro.props;
 ---
 
@@ -24,6 +27,7 @@ const {
 		<meta name="generator" content={Astro.generator} />
 		<meta name="theme-color" content="#f7f4ee" />
 		<meta name="description" content={description} />
+		{preload && <link rel="preload" as="image" href={preload} fetchpriority="high" />}
 
 		<meta property="og:type" content="website" />
 		<meta property="og:title" content={title} />

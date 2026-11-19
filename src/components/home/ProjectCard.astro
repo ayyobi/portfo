@@ -63,13 +63,13 @@ const href = `/projects/${project.slug}`;
 		</div>
 
 		<footer class="foot">
-			<span class="flex flex-wrap items-baseline gap-x-5 gap-y-1">
+			<div class="flex flex-wrap items-baseline gap-x-5 gap-y-1">
 				<h3 id={`p-${project.slug}`} class="name">
 					{project.name}
 				</h3>
 				<span class="meta">{project.category}</span>
 				<span class="meta">{project.year}</span>
-			</span>
+			</div>
 			<a href={href} class="case">
 				Voir l’étude de cas <span aria-hidden="true">→</span>
 			</a>

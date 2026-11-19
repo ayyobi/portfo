@@ -17,6 +17,8 @@ mm.add('(prefers-reduced-motion: no-preference)', () => {
 		SplitText.create(el, {
 			type: el.dataset.split === 'chars' ? 'chars,lines' : 'words,lines',
 			mask: 'lines',
+			// aria-label n'est permis que sur les titres ; sur un paragraphe, le texte découpé reste lu tel quel
+			aria: /^H[1-6]$/.test(el.tagName) ? 'auto' : 'none',
 			autoSplit: true,
 			onSplit(self) {
 				const parts = el.dataset.split === 'chars' ? self.chars : self.words;
@@ -38,6 +40,7 @@ mm.add('(prefers-reduced-motion: no-preference)', () => {
 		SplitText.create(el, {
 			type: 'lines',
 			mask: 'lines',
+			aria: 'none',
 			autoSplit: true,
 			onSplit(self) {
 				return gsap.from(self.lines, {

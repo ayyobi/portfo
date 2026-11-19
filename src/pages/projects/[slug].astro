@@ -14,7 +14,7 @@ const { project } = Astro.props as { project: Project };
 const next = getNextProject(project.slug);
 ---
 
-<Layout title={`${project.name} — Nargis Ayyobi`} description={project.pitch}>
+<Layout title={`${project.name} — Nargis Ayyobi`} description={project.pitch} preload={project.cover}>
 	<Header />
 	<main id="top">
 		<ProjectCaseStudy project={project} next={next} />

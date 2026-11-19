@@ -170,6 +170,11 @@ const start = skills.findIndex((s) => s.id === 'accessibilite');
 		background: var(--color-ink);
 		color: var(--color-bg);
 	}
+	/* le champ est invisible tant qu'il est vide : c'est la fenêtre entière qui montre le focus clavier */
+	.ide:has(.q:focus-visible) {
+		outline: 3px solid var(--color-yellow);
+		outline-offset: 4px;
+	}
 	.tab {
 		background: var(--color-ink-2);
 		padding: 0.7rem 1rem;
