@@ -1,0 +1,133 @@
+---
+// À propos : présentation, recherche de stage et vision de l'IA en « diff ».
+// À droite, la tête du panda de l'accueil, en encre crème : la souris disperse les taches.
+---
+
+<section id="about" class="bg-ink px-6 py-24 text-bg sm:px-10 lg:px-20">
+	<h2 data-split="words" class="mb-10 font-sans text-sm tracking-[0.12em] text-sage uppercase">
+		À propos de moi
+	</h2>
+
+	<div class="grid">
+		<div>
+			<p data-reveal class="txt">
+				Je m’appelle Nargis. Née en Iran, j’ai grandi en Afghanistan, et j’étudie aujourd’hui en BUT MMI à Montbéliard.
+				Je conçois et je code des interfaces, de la première idée jusqu’à la dernière ligne de CSS. J’aime quand un
+				détail bien pensé rend un site plus simple pour tout le monde.
+			</p>
+			<p data-reveal class="seek">
+				// je cherche : alternance, ou stage de 2 mois dès fin mars
+			</p>
+
+			<div data-reveal class="diff">
+				<p class="name">ma-vision-de-l-ia.diff</p>
+				<p class="del">
+					<span aria-hidden="true">- </span>
+					<del>L’IA code à ma place.</del>
+				</p>
+				<p class="add">
+					<span aria-hidden="true">+ </span>L’IA m’aide à explorer des idées et à aller plus vite.
+				</p>
+				<p class="add">
+					<span aria-hidden="true">+ </span>Mais chaque ligne, je la comprends, je la teste et je la vérifie.
+				</p>
+			</div>
+		</div>
+
+		<div class="panda" data-about-panda>
+			<svg viewBox="130 40 340 320" aria-hidden="true">
+				<defs>
+					<filter id="about-goo">
+						<feGaussianBlur stdDeviation="6" />
+						<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -9" />
+					</filter>
+				</defs>
+				{/* de l'arrière vers l'avant : bord des oreilles, oreilles, visage, taches des yeux et nez */}
+				<g filter="url(#about-goo)" fill="#f7f4ee" data-layer="0"></g>
+				<g filter="url(#about-goo)" fill="#111111" data-layer="1"></g>
+				<g filter="url(#about-goo)" fill="#f7f4ee" data-layer="2"></g>
+				<g filter="url(#about-goo)" fill="#111111" data-layer="3"></g>
+				<g fill="#f7f4ee" data-layer="4"></g>
+				<g class="eyes">
+					<circle cx="262" cy="204" r="9" fill="#f7f4ee" />
+					<circle cx="338" cy="204" r="9" fill="#f7f4ee" />
+					<circle cx="264" cy="205" r="5" fill="#111111" data-pupil />
+					<circle cx="336" cy="205" r="5" fill="#111111" data-pupil />
+					<path
+						d="M286 282 Q293 290 300 282 Q307 290 314 282"
+						fill="none"
+						stroke="#111111"
+						stroke-width="3.5"
+						stroke-linecap="round"
+					/>
+				</g>
+			</svg>
+		</div>
+	</div>
+</section>
+
+<style>
+	.grid {
+		display: grid;
+		gap: 3rem;
+		align-items: center;
+	}
+	@media (min-width: 1024px) {
+		.grid {
+			grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+		}
+	}
+	.panda {
+		width: 100%;
+		max-width: 420px;
+		margin: 0 auto;
+		cursor: crosshair;
+		touch-action: pan-y;
+	}
+	.panda svg {
+		display: block;
+		width: 100%;
+		height: auto;
+		overflow: visible;
+	}
+	.eyes {
+		opacity: 0;
+		transition: opacity 0.4s;
+	}
+	.panda.formed .eyes {
+		opacity: 1;
+	}
+	.txt {
+		max-width: 62rem;
+		font-family: var(--font-display);
+		font-size: clamp(1.4rem, 2.4vw, 2rem);
+		line-height: 1.45;
+		color: var(--color-bg);
+	}
+	.seek {
+		margin-top: 2rem;
+		font: 0.95rem var(--font-mono);
+		color: var(--color-sage);
+	}
+	.diff {
+		margin-top: 2rem;
+		max-width: 36rem;
+		border-radius: 10px;
+		background: var(--color-ink-2);
+		padding: 1rem 1.25rem;
+		font: 0.95rem/1.7 var(--font-mono);
+	}
+	.diff .name {
+		font-size: 0.75rem;
+		color: var(--color-code-light);
+		margin-bottom: 0.25rem;
+	}
+	.del {
+		color: #8a867f;
+	}
+	.add {
+		color: var(--color-sage);
+	}
+</style>
+
+<script src="../../scripts/home/about-panda.ts"></script>

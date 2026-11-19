@@ -1,8 +1,8 @@
 ---
 // Carte projet en fenêtre de code : le code s'écrit tout seul quand la carte arrive à l'écran,
-// survoler une feature y pose une tache, et `slug.run()` (jaune = action) répand l'encre
-// sur la capture puis ouvre l'étude de cas.
-import type { Project } from '../data/projects';
+// survoler une feature y pose une tache. La capture est cachée sous un papier crème :
+// on la découvre en peignant avec la souris, et `slug.run()` (jaune = action) enlève tout le papier.
+import type { Project } from '../../data/projects';
 
 interface Props {
 	project: Project;
@@ -24,16 +24,20 @@ const href = `/projects/${project.slug}`;
 		<header class="bar">
 			<span class="flex items-center gap-3">
 				<svg class="panda" viewBox="0 0 24 24" aria-hidden="true">
-					<circle cx="5" cy="5.5" r="3.6" fill="#111" /><circle cx="19" cy="5.5" r="3.6" fill="#111" />
+					<circle cx="5" cy="5.5" r="3.6" fill="#111" />
+					<circle cx="19" cy="5.5" r="3.6" fill="#111" />
 					<circle cx="12" cy="13" r="9.4" fill="#fff" stroke="#111" stroke-width="1.4" />
 					<ellipse cx="8.4" cy="12" rx="2.4" ry="3.2" transform="rotate(28 8.4 12)" fill="#111" />
 					<ellipse cx="15.6" cy="12" rx="2.4" ry="3.2" transform="rotate(-28 15.6 12)" fill="#111" />
-					<circle cx="8.9" cy="11.6" r=".9" fill="#fff" /><circle cx="15.1" cy="11.6" r=".9" fill="#fff" />
+					<circle cx="8.9" cy="11.6" r=".9" fill="#fff" />
+					<circle cx="15.1" cy="11.6" r=".9" fill="#fff" />
 					<ellipse cx="12" cy="16.6" rx="1.7" ry="1.1" fill="#111" />
 				</svg>
 				<span class="file">{project.slug}.js</span>
 			</span>
-			<span class="count">{pad(index + 1)} / {pad(total)}</span>
+			<span class="count">
+				{pad(index + 1)} / {pad(total)}
+			</span>
 		</header>
 
 		<div class="body">
@@ -47,21 +51,28 @@ const href = `/projects/${project.slug}`;
 <span class="l">  stack:    [<span class="s">{card.stack.map(q).join(', ')}</span>],</span>
 <span class="l">{'}'};</span>
 <span class="l"> </span>
-<span class="l"><a class="run" href={href} data-run>{project.slug}.run()</a>;  <span class="c">// ← clique pour lancer</span></span></code></pre>
+<span class="l"><a class="run" href={href} data-run>{project.slug}.run()</a>;  <span class="c" data-run-note>// ← clique pour lancer</span></span></code></pre>
 
-			<a href={href} class="shot" data-shot data-tilt data-img-reveal tabindex="-1" aria-hidden="true">
+			<a href={href} class="shot" data-shot data-tilt tabindex="-1" aria-hidden="true">
 				{project.cover && <img src={project.cover} alt="" loading="lazy" decoding="async" data-parallax-img />}
-				<svg class="ink" viewBox="0 0 100 64" preserveAspectRatio="xMidYMid slice"><g data-ink fill="#111"></g></svg>
+				<canvas class="paper" data-cover></canvas>
+				<span class="hint" data-hint>
+					// peins pour découvrir · ou {project.slug}.run()
+				</span>
 			</a>
 		</div>
 
 		<footer class="foot">
 			<span class="flex flex-wrap items-baseline gap-x-5 gap-y-1">
-				<h3 id={`p-${project.slug}`} class="name">{project.name}</h3>
+				<h3 id={`p-${project.slug}`} class="name">
+					{project.name}
+				</h3>
 				<span class="meta">{project.category}</span>
 				<span class="meta">{project.year}</span>
 			</span>
-			<a href={href} class="case">Voir l’étude de cas <span aria-hidden="true">→</span></a>
+			<a href={href} class="case">
+				Voir l’étude de cas <span aria-hidden="true">→</span>
+			</a>
 		</footer>
 	</article>
 </li>
@@ -92,7 +103,7 @@ const href = `/projects/${project.slug}`;
 	}
 	.count {
 		font: 0.75rem var(--font-mono);
-		color: #aaa69f;
+		color: var(--color-code-light);
 	}
 	.body {
 		display: grid;
@@ -107,26 +118,32 @@ const href = `/projects/${project.slug}`;
 		}
 	}
 	.code {
-		font: clamp(0.62rem, 2.55vw, 0.9rem)/1.95 var(--font-mono);
+		font: clamp(0.7rem, 2.55vw, 0.9rem)/1.95 var(--font-mono);
 		counter-reset: ln;
-		overflow-x: auto;
-		white-space: pre;
+		overflow: hidden;
+		white-space: normal;
 	}
+	/* une ligne de code = un bloc ; si elle est trop longue, elle revient à la ligne
+	   sous son propre texte (pas de barre de défilement) */
 	.l {
-		display: inline-block;
+		position: relative;
+		display: block;
+		padding-left: 2.5em;
+		white-space: pre-wrap;
+		overflow-wrap: anywhere;
 		counter-increment: ln;
 	}
 	.l::before {
 		content: counter(ln);
-		display: inline-block;
-		width: 2.5em;
-		color: #77736d;
+		position: absolute;
+		left: 0;
+		color: var(--color-code);
 	}
 	.k {
 		color: var(--color-sage);
 	}
 	.c {
-		color: #aaa69f;
+		color: var(--color-code-light);
 	}
 	.feat {
 		position: relative;
@@ -143,7 +160,9 @@ const href = `/projects/${project.slug}`;
 		background: var(--color-bg);
 		transform: scale(0.2) rotate(-6deg);
 		opacity: 0;
-		transition: transform 0.35s cubic-bezier(0.3, 1.5, 0.5, 1), opacity 0.2s;
+		transition:
+			transform 0.35s cubic-bezier(0.3, 1.5, 0.5, 1),
+			opacity 0.2s;
 	}
 	.feat:hover {
 		color: var(--color-ink);
@@ -152,7 +171,11 @@ const href = `/projects/${project.slug}`;
 		transform: none;
 		opacity: 1;
 	}
+	/* zone cliquable agrandie (au moins 24 px de haut) sans décaler le code */
 	.run {
+		display: inline-block;
+		margin: -0.4em -0.3em;
+		padding: 0.4em 0.3em;
 		color: var(--color-yellow);
 		font-weight: 600;
 		text-decoration: underline;
@@ -181,12 +204,37 @@ const href = `/projects/${project.slug}`;
 		height: 100%;
 		object-fit: cover;
 	}
-	.ink {
+	.paper {
 		position: absolute;
 		inset: 0;
 		width: 100%;
 		height: 100%;
+		cursor: crosshair;
+		transition: opacity 0.5s;
+	}
+	.paper.gone {
+		opacity: 0;
 		pointer-events: none;
+	}
+	.hint {
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		translate: -50% -50%;
+		white-space: nowrap;
+		font: 0.8rem var(--font-mono);
+		color: var(--color-muted);
+		pointer-events: none;
+		transition: opacity 0.4s;
+	}
+	.hint.gone {
+		opacity: 0;
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.paper,
+		.hint {
+			display: none;
+		}
 	}
 	.name {
 		font: 600 0.9rem var(--font-mono);
@@ -194,10 +242,11 @@ const href = `/projects/${project.slug}`;
 	}
 	.meta {
 		font-size: 0.8rem;
-		color: #aaa69f;
+		color: var(--color-code-light);
 	}
 	.case {
 		flex-shrink: 0;
+		padding-block: 0.4rem;
 		font-size: 0.85rem;
 	}
 	.case:hover {
@@ -209,65 +258,4 @@ const href = `/projects/${project.slug}`;
 	}
 </style>
 
-<script>
-	const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-	const NS = 'http://www.w3.org/2000/svg';
-
-	document.querySelectorAll<HTMLElement>('.win').forEach((win) => {
-		const code = win.querySelector<HTMLElement>('[data-code]')!;
-		const lines = [...code.querySelectorAll<HTMLElement>('.l')];
-
-		// 1. le code s'écrit quand la carte arrive à l'écran
-		if (!reduce) {
-			code.classList.add('typing');
-			const io = new IntersectionObserver(([e]) => {
-				if (!e.isIntersecting) return;
-				io.disconnect();
-				let i = 0;
-				const next = () => {
-					const l = lines[i];
-					if (!l) return code.classList.remove('typing');
-					const chars = Math.max(1, l.textContent!.length + 3);
-					let n = 0;
-					const step = () => {
-						n += 2;
-						const p = Math.min(1, n / chars);
-						l.style.clipPath = `inset(0 ${100 - p * 100}% 0 0)`;
-						if (p < 1) setTimeout(step, 14);
-						else { l.style.clipPath = 'none'; i++; setTimeout(next, 40); }
-					};
-					step();
-				};
-				next();
-			}, { threshold: 0.35 });
-			io.observe(win);
-		}
-
-		// 2. run() : l'encre se répand sur la capture, puis on ouvre l'étude de cas
-		const run = win.querySelector<HTMLAnchorElement>('[data-run]');
-		const ink = win.querySelector<SVGGElement>('[data-ink]');
-		run?.addEventListener('click', (e) => {
-			if (reduce || !ink || e.metaKey || e.ctrlKey) return;
-			e.preventDefault();
-			ink.innerHTML = '';
-			const drops: [SVGCircleElement, number][] = [];
-			for (let k = 0; k < 9; k++) {
-				const c = document.createElementNS(NS, 'circle');
-				c.setAttribute('cx', String(20 + Math.random() * 60));
-				c.setAttribute('cy', String(12 + Math.random() * 40));
-				c.setAttribute('r', '0');
-				ink.appendChild(c);
-				drops.push([c, 18 + Math.random() * 30]);
-			}
-			const t0 = performance.now();
-			const grow = (now: number) => {
-				const p = Math.min(1, (now - t0) / 650);
-				const e2 = 1 - Math.pow(1 - p, 3);
-				drops.forEach(([c, r], k) => c.setAttribute('r', String(r * Math.max(0, e2 * 1.3 - k * 0.03))));
-				if (p < 1) requestAnimationFrame(grow);
-				else location.href = run.href;
-			};
-			requestAnimationFrame(grow);
-		});
-	});
-</script>
+<script src="../../scripts/home/project-card.ts"></script>

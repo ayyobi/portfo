@@ -1,0 +1,336 @@
+---
+// Compétences en autocomplétion : au chargement, le curseur efface « ayyobi » de « nargis.ayyobi »,
+// puis la liste s'ouvre. On tape pour filtrer, ↑ ↓ pour naviguer, survol ou toucher pour choisir.
+type Skill = { id: string; kind: string; text: string; projects: { label: string; href?: string }[] };
+const Z = { label: 'ZOZZO', href: '/projects/zozzo' };
+const W = { label: 'WASHROLL', href: '/projects/washroll' };
+const O = { label: 'OLYVIA', href: '/projects/olyvia' };
+const P = { label: 'ce portfolio' };
+
+const skills: Skill[] = [
+	{
+		id: 'astro',
+		kind: 'framework',
+		text: 'Mon framework principal : des sites rapides, construits avec des composants.',
+		projects: [Z, W, P],
+	},
+	{ id: 'tailwind', kind: 'css', text: 'Styliser vite tout en gardant une interface cohérente.', projects: [Z, W, P] },
+	{
+		id: 'typescript',
+		kind: 'langage',
+		text: 'Du JavaScript typé, pour repérer les erreurs avant qu’elles arrivent.',
+		projects: [P],
+	},
+	{
+		id: 'javascript',
+		kind: 'langage',
+		text: 'Les interactions : animations, formulaires, logique de l’interface.',
+		projects: [Z, W, P],
+	},
+	{
+		id: 'pocketbase',
+		kind: 'base de données',
+		text: 'Comptes, données et réservations, avec une base simple à mettre en place.',
+		projects: [Z, W],
+	},
+	{
+		id: 'wordpress',
+		kind: 'cms',
+		text: 'Créer des sites que d’autres personnes peuvent mettre à jour facilement.',
+		projects: [O],
+	},
+	{
+		id: 'figma',
+		kind: 'outil',
+		text: 'Maquettes, prototypes navigables et identité visuelle.',
+		projects: [Z, W, O, P],
+	},
+	{
+		id: 'git',
+		kind: 'outil',
+		text: 'Versionner mon code et travailler en équipe sans rien perdre.',
+		projects: [Z, W, P],
+	},
+	{
+		id: 'ux',
+		kind: 'méthode',
+		text: 'Partir des vrais besoins : parcours, tests utilisateurs, retours.',
+		projects: [Z, W, O],
+	},
+	{
+		id: 'accessibilite',
+		kind: 'méthode',
+		text: 'Concevoir pour tout le monde : contrastes, navigation au clavier, lecteurs d’écran.',
+		projects: [Z, P],
+	},
+	{
+		id: 'responsive',
+		kind: 'méthode',
+		text: 'Un site qui fonctionne aussi bien sur téléphone que sur ordinateur.',
+		projects: [Z, W, O, P],
+	},
+	{
+		id: 'identiteVisuelle',
+		kind: 'méthode',
+		text: 'Logo, couleurs et typographies qui donnent un caractère au projet.',
+		projects: [Z, W, O, P],
+	},
+];
+const start = skills.findIndex((s) => s.id === 'accessibilite');
+---
+
+<section id="skills" class="px-6 py-24 sm:px-10 lg:px-20">
+	<h2 data-split="chars" class="mb-12 font-display text-3xl font-bold sm:text-[32px]">
+		Compétences
+	</h2>
+
+	<div class="ide" data-skillbox data-start={start}>
+		<p class="tab">competences.ts</p>
+		<div class="p-4 sm:p-6">
+			<label class="line">
+				<span class="ln" aria-hidden="true">
+					1
+				</span>
+				<span class="obj" aria-hidden="true">
+					nargis.
+				</span>
+				<input
+					class="q"
+					type="text"
+					role="combobox"
+					aria-label="Chercher une compétence"
+					aria-controls="skill-list"
+					aria-expanded="true"
+					aria-autocomplete="list"
+					autocomplete="off"
+					spellcheck="false"
+					data-q
+				/>
+				<span class="ghost" aria-hidden="true" data-ghost>
+					ayyobi
+				</span>
+				<i class="caret" aria-hidden="true"></i>
+			</label>
+
+			<div class="pop" data-pop>
+				<ul id="skill-list" role="listbox" aria-label="Compétences" class="list">
+					{skills.map((s, i) => (
+						<li
+							id={`sk-${s.id}`}
+							role="option"
+							aria-selected={i === start ? 'true' : 'false'}
+							data-i={i}
+							data-id={s.id}
+							class="opt"
+						>
+							<i aria-hidden="true" />
+							<span class="id">{s.id}</span>
+							<span class="kind">{s.kind}</span>
+						</li>
+					))}
+				</ul>
+				<div class="detail" aria-live="polite">
+					{skills.map((s, i) => (
+						<div data-d={s.id} hidden={i !== start}>
+							<p class="sig">
+								nargis.{s.id} <span>: {s.kind}</span>
+							</p>
+							<p class="text">{s.text}</p>
+							{s.projects.length ? (
+								<>
+									<ul class="chips">
+										{s.projects.map((p) => (
+											<li>{p.href ? <a href={p.href}>{p.label}</a> : <span>{p.label}</span>}</li>
+										))}
+									</ul>
+									<p class="note">
+										Utilisé dans {s.projects.length} projet{s.projects.length > 1 ? 's' : ''} — clic sur un projet →
+										étude de cas
+									</p>
+								</>
+							) : (
+								<p class="note">// utilisé en cours et en TP au BUT MMI</p>
+							)}
+						</div>
+					))}
+				</div>
+			</div>
+			<p class="help">
+				// tape, ↑ ↓ pour naviguer · {skills.length} compétences · au chargement, le curseur efface « ayyobi » puis
+				ouvre la liste
+			</p>
+		</div>
+	</div>
+</section>
+
+<style>
+	.ide {
+		overflow: hidden;
+		border-radius: 12px;
+		background: var(--color-ink);
+		color: var(--color-bg);
+	}
+	.tab {
+		background: var(--color-ink-2);
+		padding: 0.7rem 1rem;
+		font: 0.8rem var(--font-mono);
+		color: var(--color-sage);
+	}
+	.line {
+		display: flex;
+		align-items: baseline;
+		font: 600 1.5rem var(--font-mono);
+		cursor: text;
+	}
+	.ln {
+		width: 2rem;
+		font-size: 0.85rem;
+		font-weight: 400;
+		color: var(--color-code);
+	}
+	.q {
+		width: 0;
+		min-width: 0;
+		background: transparent;
+		border: 0;
+		outline: 0;
+		color: inherit;
+		font: inherit;
+		padding: 0;
+		caret-color: transparent;
+	}
+	.ghost {
+		color: var(--color-bg);
+	}
+	.caret {
+		display: inline-block;
+		width: 0.6em;
+		height: 0.3em;
+		margin-left: 0.1em;
+		border-radius: 50%;
+		background: var(--color-bg);
+		transform: rotate(-10deg);
+		animation: caret 1.1s steps(1) infinite;
+	}
+	@keyframes caret {
+		50% {
+			opacity: 0;
+		}
+	}
+	.line:focus-within {
+		outline: 2px solid var(--color-yellow);
+		outline-offset: 6px;
+		border-radius: 4px;
+	}
+	.pop {
+		display: grid;
+		margin-top: 1rem;
+		overflow: hidden;
+		border: 1px solid var(--color-line);
+		border-radius: 8px;
+		background: var(--color-ink-3);
+		transform-origin: top left;
+		transition:
+			opacity 0.3s,
+			transform 0.3s;
+	}
+	.ide.closed .pop {
+		opacity: 0;
+		transform: scaleY(0.6);
+	}
+	@media (min-width: 900px) {
+		.pop {
+			grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+		}
+	}
+	.list {
+		padding: 0.5rem 0;
+	}
+	.opt {
+		display: flex;
+		align-items: center;
+		gap: 0.9rem;
+		padding: 0.45rem 1rem;
+		font: 0.95rem var(--font-mono);
+		cursor: pointer;
+	}
+	.opt i {
+		width: 8px;
+		height: 10px;
+		border-radius: 50%;
+		background: var(--color-sage);
+		rotate: -28deg;
+		flex-shrink: 0;
+	}
+	.opt .kind {
+		margin-left: auto;
+		font-size: 0.72rem;
+		color: var(--color-code-light);
+	}
+	.opt[aria-selected='true'] {
+		background: #2b2b25;
+		font-weight: 500;
+	}
+	.opt[aria-selected='true'] i {
+		background: var(--color-bg);
+	}
+	.opt[hidden] {
+		display: none;
+	}
+	.detail {
+		padding: 1rem 1.25rem 1.5rem;
+		border-top: 1px solid var(--color-line);
+	}
+	@media (min-width: 900px) {
+		.detail {
+			border-top: 0;
+		}
+	}
+	.sig {
+		font: 0.95rem var(--font-mono);
+	}
+	.sig span {
+		color: var(--color-sage);
+	}
+	.text {
+		margin-top: 0.75rem;
+		max-width: 30rem;
+		font-size: 1.05rem;
+		line-height: 1.6;
+		color: var(--color-beige);
+	}
+	.chips {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		margin-top: 1rem;
+	}
+	.chips a,
+	.chips span {
+		display: inline-block;
+		border: 1px solid var(--color-code);
+		border-radius: 999px;
+		padding: 0.4rem 0.8rem;
+		font-size: 0.8rem;
+		font-weight: 600;
+	}
+	.chips a:hover,
+	.chips a:focus-visible {
+		background: var(--color-bg);
+		color: var(--color-ink);
+		outline: none;
+	}
+	.note,
+	.help {
+		margin-top: 1rem;
+		font: 0.75rem var(--font-mono);
+		color: var(--color-code-light);
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.caret {
+			animation: none;
+		}
+	}
+</style>
+
+<script src="../../scripts/home/skills.ts"></script>

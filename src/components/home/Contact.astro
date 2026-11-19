@@ -1,0 +1,353 @@
+---
+// Contact en « ambiance code » : le formulaire est un objet JavaScript qu'on remplit,
+// et `send(message)` (jaune = action) envoie le message dans la boîte Gmail de Nargis
+// grâce à Web3Forms (service gratuit, sans serveur).
+//
+// Clé Web3Forms : à créer sur https://web3forms.com avec ayyobinargis@gmail.com,
+// puis à coller ci-dessous. Elle est faite pour être publique (elle ne sert qu'à envoyer vers ton adresse).
+const WEB3FORMS_KEY = '72e90d5e-50dc-4c6d-9994-f84f4774a6c5';
+// Derrière, une grille de points d'encre s'écarte sous la souris.
+const contact = {
+	email: 'ayyobinargis@gmail.com',
+	linkedin: 'https://www.linkedin.com/in/nargis-ayyobi',
+	github: 'https://github.com/ayyobi',
+	cv: `${import.meta.env.BASE_URL}Nargis-AYYOBI-CV.pdf`,
+};
+---
+
+<section id="contact" class="contact px-6 py-24 sm:px-10 lg:px-20">
+	<div class="dots" aria-hidden="true" data-dotgrid></div>
+
+	<div class="relative">
+		<h2 data-split="words" class="mb-10 font-sans text-sm tracking-[0.12em] text-muted uppercase">
+			Contact
+		</h2>
+		<p data-split="chars" class="font-display text-3xl font-bold sm:text-[32px]">
+			Créons ensemble.
+		</p>
+		<p data-lines class="mt-4 text-sm text-muted">
+			Un projet, une alternance ou un stage de 2 mois dès fin mars ? Écrivez-moi.
+		</p>
+
+		<form class="ide" data-contact data-to={contact.email} data-key={WEB3FORMS_KEY} novalidate>
+			<p class="tab">
+				<span>contact.js</span>
+				<span class="dot-row" aria-hidden="true">
+					<i></i>
+					<i></i>
+					<i></i>
+				</span>
+			</p>
+			<div class="code">
+				<p class="l">
+					<span class="k">const</span> message = {'{'}
+				</p>
+				<p class="l field">
+					<label for="c-nom" class="key">
+						nom:
+					</label>
+					<span class="q" aria-hidden="true">
+						"
+					</span>
+					<input id="c-nom" name="nom" type="text" autocomplete="name" placeholder="Votre nom complet" required />
+					<span class="q" aria-hidden="true">
+						",
+					</span>
+				</p>
+				<p class="l field">
+					<label for="c-email" class="key">
+						email:
+					</label>
+					<span class="q" aria-hidden="true">
+						"
+					</span>
+					<input id="c-email" name="email" type="email" autocomplete="email" placeholder="votre@email.com" required />
+					<span class="q" aria-hidden="true">
+						",
+					</span>
+				</p>
+				<p class="l">
+					<label for="c-msg" class="key">
+						message:
+					</label>{' '}
+					<span class="q" aria-hidden="true">
+						`
+					</span>
+				</p>
+				<p class="l area">
+					<textarea id="c-msg" name="message" rows="4" placeholder="Votre message…" required></textarea>
+				</p>
+				<p class="l">
+					<span class="q" aria-hidden="true">
+						`
+					</span>
+					,
+				</p>
+				<p class="l">{'}'};</p>
+				<p class="l">&nbsp;</p>
+				<p class="l">
+					<button type="submit" class="send" data-send>
+						send(message)
+					</button>
+					; <span class="c">// ← envoie le message</span>
+				</p>
+				<!-- piège à robots : invisible pour les personnes, les robots le remplissent -->
+				<input type="checkbox" name="botcheck" class="trap" tabindex="-1" autocomplete="off" aria-hidden="true" />
+			</div>
+			<p class="console" aria-live="polite" data-console>
+				<span class="c">&gt;</span> en attente…
+			</p>
+		</form>
+
+		<ul class="links">
+			<li class="mail">
+				<span>{contact.email}</span>
+				<button type="button" class="copy" data-copy={contact.email}>
+					copier
+				</button>
+			</li>
+			<li>
+				<a href={contact.linkedin} target="_blank" rel="noreferrer" data-scramble>
+					LinkedIn
+				</a>
+			</li>
+			<li>
+				<a href={contact.github} target="_blank" rel="noreferrer" data-scramble>
+					GitHub
+				</a>
+			</li>
+		</ul>
+		<a href={contact.cv} target="_blank" rel="noreferrer" class="cv">
+			Télécharger mon CV <span aria-hidden="true">↗</span>
+		</a>
+	</div>
+</section>
+
+<style>
+	.contact {
+		position: relative;
+		overflow: hidden;
+	}
+	.dots {
+		position: absolute;
+		inset: 0;
+		pointer-events: none;
+	}
+	.dots :global(i) {
+		position: absolute;
+		width: 6px;
+		height: 8px;
+		border-radius: 50%;
+		background: var(--color-dot);
+		rotate: -28deg;
+	}
+	.ide {
+		position: relative;
+		margin-top: 2.5rem;
+		overflow: hidden;
+		border-radius: 12px;
+		background: var(--color-ink);
+		color: var(--color-bg);
+	}
+	.tab {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		background: var(--color-ink-2);
+		padding: 0.7rem 1rem;
+		font: 0.8rem var(--font-mono);
+		color: var(--color-sage);
+	}
+	.dot-row {
+		display: flex;
+		gap: 6px;
+	}
+	.dot-row i {
+		width: 8px;
+		height: 8px;
+		border-radius: 50%;
+		background: var(--color-code);
+	}
+	.code {
+		counter-reset: ln;
+		padding: 1.25rem 1rem 1.5rem 0;
+		font: 0.95rem/2.1 var(--font-mono);
+	}
+	.l {
+		display: flex;
+		align-items: baseline;
+		flex-wrap: wrap;
+		counter-increment: ln;
+		padding-left: 3.25rem;
+		position: relative;
+	}
+	.l::before {
+		content: counter(ln);
+		position: absolute;
+		left: 0;
+		width: 2.25rem;
+		text-align: right;
+		color: var(--color-code);
+	}
+	.field,
+	.area {
+		padding-left: 4.5rem;
+	}
+	.k {
+		color: var(--color-sage);
+		margin-right: 0.6ch;
+	}
+	.key {
+		min-width: 9ch;
+		color: var(--color-bg);
+	}
+	.area .key {
+		min-width: 0;
+	}
+	.q {
+		color: var(--color-beige);
+	}
+	.c {
+		color: var(--color-code-light);
+		margin-left: 0.6ch;
+	}
+	.field input,
+	.area textarea {
+		flex: 1;
+		min-width: 10ch;
+		max-width: 34rem;
+		border: 0;
+		border-bottom: 1px dashed var(--color-dim);
+		background: transparent;
+		color: var(--color-beige);
+		font: inherit;
+		padding: 0 0.2rem;
+		caret-color: var(--color-sage);
+	}
+	.area textarea {
+		width: 100%;
+		max-width: 46rem;
+		resize: vertical;
+		line-height: 1.7;
+		border: 1px dashed var(--color-dim);
+		border-radius: 6px;
+		padding: 0.4rem 0.6rem;
+	}
+	.field input::placeholder,
+	.area textarea::placeholder {
+		color: var(--color-code);
+	}
+	.field input:focus-visible,
+	.area textarea:focus-visible {
+		outline: none;
+		border-color: var(--color-sage);
+		background: #1c1c1a;
+	}
+	[aria-invalid='true'] {
+		border-color: var(--color-error) !important;
+	}
+	.send {
+		display: inline-block;
+		margin: -0.4em -0.3em;
+		padding: 0.4em 0.3em;
+		color: var(--color-yellow);
+		font: 600 1em var(--font-mono);
+		text-decoration: underline;
+		text-underline-offset: 3px;
+		cursor: pointer;
+	}
+	.send:hover,
+	.send:focus-visible {
+		background: var(--color-yellow);
+		color: var(--color-ink);
+		text-decoration: none;
+		outline: none;
+	}
+	.trap {
+		display: none;
+	}
+	.send[disabled] {
+		opacity: 0.6;
+		cursor: wait;
+	}
+	.console :global(.ok) {
+		color: var(--color-bg);
+	}
+	.console {
+		border-top: 1px solid var(--color-line);
+		background: var(--color-ink-3);
+		padding: 0.7rem 1rem;
+		font: 0.8rem var(--font-mono);
+		color: var(--color-sage);
+		min-height: 2.6rem;
+	}
+	.console :global(.err) {
+		color: var(--color-error);
+	}
+	.links {
+		display: flex;
+		flex-direction: column;
+		gap: 0.9rem;
+		margin-top: 2rem;
+		border-top: 1px solid #e0dbd2;
+		padding-top: 1.5rem;
+		font-weight: 600;
+	}
+	.mail {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+	}
+	.copy {
+		border: 1px solid var(--color-ink);
+		border-radius: 999px;
+		padding: 0.3rem 0.75rem;
+		font: 500 0.7rem var(--font-mono);
+		cursor: pointer;
+	}
+	.copy:hover,
+	.copy:focus-visible {
+		background: var(--color-ink);
+		color: var(--color-bg);
+		outline: none;
+	}
+	.links a {
+		padding-block: 0.25rem;
+	}
+	.links a:hover {
+		text-decoration: underline;
+	}
+	.links a:focus-visible,
+	.cv:focus-visible {
+		outline: 2px solid var(--color-ink);
+		outline-offset: 3px;
+	}
+	.cv {
+		display: inline-flex;
+		gap: 0.6rem;
+		margin-top: 1.5rem;
+		border: 1.5px solid var(--color-ink);
+		border-radius: 999px;
+		background: var(--color-bg);
+		padding: 0.75rem 1.3rem;
+		font-size: 0.75rem;
+		font-weight: 600;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+	}
+	.cv:hover {
+		background: var(--color-ink);
+		color: var(--color-bg);
+	}
+	@media (max-width: 640px) {
+		.field,
+		.area {
+			padding-left: 3.25rem;
+		}
+		.code {
+			font-size: 0.82rem;
+		}
+	}
+</style>
+
+<script src="../../scripts/home/contact.ts"></script>

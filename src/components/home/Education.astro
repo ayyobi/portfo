@@ -1,15 +1,13 @@
 ---
-// Études racontées comme un `git log --graph` : chaque diplôme est un commit,
-// le dernier, en pointillés, reste à écrire et mène au contact.
+// Parcours raconté comme un `git log --graph --reverse`, du plus ancien au plus récent : chaque diplôme
+// et chaque stage est un commit ; le dernier, en pointillés, reste à écrire et mène au contact.
 const commits = [
 	{
-		hash: 'a3f2c1e',
-		head: true,
-		date: 'sept. 2025 — en cours · 2ᵉ année',
-		title: 'BUT MMI',
-		sub: 'Métiers du Multimédia et de l’Internet',
-		place: 'IUT Nord Franche-Comté, Montbéliard',
-		msg: 'feat: développement web, design, communication digitale, gestion de projet',
+		hash: 'c1d8aa0',
+		date: '2020 — 2023',
+		title: 'Baccalauréat général',
+		place: 'Kaboul, Afghanistan',
+		msg: 'init: premier commit',
 	},
 	{
 		hash: '7b9e04d',
@@ -20,45 +18,57 @@ const commits = [
 		msg: 'feat: premiers sites en HTML, CSS, JavaScript',
 	},
 	{
-		hash: 'c1d8aa0',
-		date: '2020 — 2023',
-		title: 'Baccalauréat général',
-		place: 'Kaboul, Afghanistan',
-		msg: 'init: premier commit',
+		hash: 'e4b7d21',
+		date: '2024 · 2 mois',
+		title: 'DM Web — Agence web',
+		sub: 'Stage',
+		place: 'Lons-le-Saunier',
+		msg: 'feat: création et modification de sites WordPress, intégration de contenus et mises en page',
+	},
+	{
+		hash: 'a3f2c1e',
+		head: true,
+		date: 'sept. 2025 — en cours · 2ᵉ année',
+		title: 'BUT MMI',
+		sub: 'Métiers du Multimédia et de l’Internet',
+		place: 'IUT Nord Franche-Comté, Montbéliard',
+		msg: 'feat: développement web, design, communication digitale, gestion de projet',
 	},
 ];
 ---
 
 <section id="education" class="px-6 py-24 sm:px-10 lg:px-20">
-	<h2 data-split="words" class="mb-10 font-sans text-sm tracking-[0.12em] text-muted uppercase">Études</h2>
-	<p class="cmd font-mono text-[13px] text-muted">$ git log --graph nargis/etudes</p>
+	<h2 data-split="words" class="mb-10 font-sans text-sm tracking-[0.12em] text-muted uppercase">
+		Parcours
+	</h2>
+	<p class="cmd font-mono text-[13px] text-muted">$ git log --graph --reverse nargis/parcours</p>
 
 	<ol class="log">
-		{
-			commits.map((c, i) => (
-				<li data-reveal style={`--reveal-delay:${i * 80}ms`} class="commit">
-					<i class="dot" aria-hidden="true" />
-					<p class="meta">
-						<span>{c.hash}</span>
-						{c.head && <span class="head">HEAD → main</span>}
-						<span>{c.date}</span>
-					</p>
-					<h3 class="title">{c.title}</h3>
-					{c.sub && <p class="sub">{c.sub}</p>}
-					<p class="place">{c.place}</p>
-					<p class="msg">{c.msg}</p>
-				</li>
-			))
-		}
+		{commits.map((c, i) => (
+			<li data-reveal style={`--reveal-delay:${i * 80}ms`} class="commit">
+				<i class="dot" aria-hidden="true" />
+				<p class="meta">
+					<span>{c.hash}</span>
+					{c.head && <span class="head">HEAD → main</span>}
+					<span>{c.date}</span>
+				</p>
+				<h3 class="title">{c.title}</h3>
+				{c.sub && <p class="sub">{c.sub}</p>}
+				<p class="place">{c.place}</p>
+				<p class="msg">{c.msg}</p>
+			</li>
+		))}
 		<li data-reveal class="commit next">
 			<i class="dot" aria-hidden="true" />
 			<p class="meta">
 				<span>???????</span>
 				<span>dès fin mars</span>
 			</p>
-			<h3 class="title">Ton entreprise ?</h3>
+			<h3 class="title">Ma future entreprise&nbsp;?</h3>
 			<p class="sub">Alternance, ou stage de 2 mois</p>
-			<p class="msg dark">next: le prochain commit reste à écrire <a href="#contact">→ me contacter</a></p>
+			<p class="msg dark">
+				next: le prochain commit reste à écrire <a href="#contact">→ me contacter</a>
+			</p>
 		</li>
 	</ol>
 </section>
@@ -151,6 +161,8 @@ const commits = [
 		color: var(--color-ink);
 	}
 	.msg a {
+		display: inline-block;
+		padding-block: 0.3rem;
 		text-decoration: underline;
 		text-underline-offset: 3px;
 	}
