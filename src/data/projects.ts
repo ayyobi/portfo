@@ -1,11 +1,5 @@
-export interface ProjectImage {
-	src: string;
-	alt: string;
-	width: number;
-	height: number;
-	caption: string;
-	presentation?: 'mobile' | 'page';
-}
+// Les projets du portfolio : une entrée = une carte sur l'accueil + une page projet.
+// Pour ajouter un projet, ajoute une entrée ici : sa page `/projects/<slug>` se crée toute seule.
 
 export interface Project {
 	slug: string;
@@ -13,30 +7,25 @@ export interface Project {
 	name: string;
 	year: string;
 	category: string;
-	/** contenu de la fenêtre de code sur l’accueil */
-	card?: { type: string; goal: string; features: string[]; stack: string[] };
-	tech: string[];
-	skills: string[];
-	features: string[];
-	summary: string;
-	audience?: string;
-	context?: string;
-	problem?: string;
-	objective?: string;
-	solution?: string;
-	development?: string;
+	/** contenu de la fenêtre de code sur l'accueil */
+	card: { type: string; goal: string; features: string[]; stack: string[] };
+	/** une phrase : ce qu'est le projet */
+	pitch: string;
+	/** une phrase : le besoin de départ */
+	need: string;
+	/** une phrase : ce que j'ai construit pour y répondre */
+	answer: string;
 	role: string;
-	liveUrl?: string;
+	tech: string[];
+	/** l'image du projet (couverture révélée à l'encre) */
+	cover: string;
+	/** le résultat : capture du site en ligne */
+	live: { url: string; image: string; alt: string };
+	/** extrait de code (simplifié) montré à côté du site en ligne */
+	code: { file: string; source: string };
 	githubUrl?: string;
-	behanceUrl?: string;
-	cover?: string;
-	coverImages?: string[];
-	images?: {
-		context?: ProjectImage;
-		objectives?: ProjectImage[];
-		ui?: ProjectImage[];
-		result?: ProjectImage;
-	};
+	/** couleurs de l'affiche, utilisées par le pinceau d'encre de la page projet */
+	palette: string[];
 }
 
 export const projects: Project[] = [
@@ -44,255 +33,147 @@ export const projects: Project[] = [
 		slug: 'zozzo',
 		number: '01',
 		name: 'ZOZZO',
-		cover: '/zozzo/intro_1.avif',
-		images: {
-			context: {
-				src: '/zozzo/galaxytabs8ultra%20(3).avif',
-				alt: 'Accueil de Zozzo sur tablette, avec son personnage dans un univers illustré et coloré.',
-				width: 894, height: 626,
-				caption: 'L’univers de Zozzo, présenté sur tablette.',
-			},
-			objectives: [
-				{
-					src: '/zozzo/galaxytabs8ultra%20(1).avif',
-					alt: 'Écran Histoires de Zozzo sur tablette, avec les aventures Rentrée au primaire, Jardin magique et Fait du sport.',
-					width: 658, height: 494,
-					caption: 'Choisir une histoire pour découvrir la langue des signes.',
-				},
-				{
-					src: '/zozzo/galaxytabs8ultra%20(2).avif',
-					alt: 'Histoire illustrée de Zozzo sur tablette, avec un bouton de lecture vidéo devant une école.',
-					width: 700, height: 524,
-					caption: 'Un récit illustré à regarder en vidéo.',
-				},
-			],
-			ui: [
-				{
-					src: '/zozzo/_hpelitedragonfly%20(2).avif',
-					alt: 'Page Leçons de Zozzo sur ordinateur convertible, avec les leçons sur la rentrée et le jardin magique.',
-					width: 788, height: 627,
-					caption: 'Le catalogue des leçons et ses cartes illustrées.',
-				},
-				{
-					src: '/zozzo/_hpelitedragonfly%20(1).avif',
-					alt: 'Quiz de langue des signes sur ordinateur convertible, avec une vidéo et quatre réponses possibles.',
-					width: 820, height: 614,
-					caption: 'Un quiz pour reconnaître les signes et mettre en pratique ses connaissances.',
-				},
-			],
-			result: {
-				src: '/zozzo/lecon_reussi.avif',
-				alt: 'Interface du quiz Zozzo avec le personnage et les choix Merci, Ensemble, Bonjour et Au revoir ; Bonjour est affiché en vert.',
-				width: 2880, height: 2048,
-				caption: 'L’interface du quiz et le retour visuel sur une réponse.',
-			},
-		},
 		year: '2025',
-		card: { type: 'Application web éducative', goal: 'Apprendre la LSF aux enfants', features: ['Leçons', 'Quiz', 'Dictionnaire', 'Histoires', 'Mini-jeux'], stack: ['Astro', 'Tailwind', 'PocketBase'] },
 		category: 'Développement web · UI/UX · Accessibilité',
-		summary:
-			"ZOZZO est une application web éducative destinée aux enfants de 6 à 12 ans pour faciliter la découverte et l’apprentissage de la Langue des Signes Française (LSF). L’application utilise un univers graphique ludique et un personnage appelé Zozzo pour accompagner l'enfant pendant son apprentissage.",
-		context:
-			"La Langue des Signes Française reste peu connue et peu enseignée aux enfants entendants. ZOZZO sensibilise dès le plus jeune âge à une communication plus inclusive entre enfants sourds, malentendants et entendants.",
-		audience:
-			'Enfants de 6 à 12 ans, ainsi que les familles souhaitant découvrir la Langue des Signes Française.',
-		problem:
-			'Comment rendre la découverte de la Langue des Signes Française accessible, ludique et motivante pour des enfants de 6 à 12 ans ?',
-		objective:
-			"Faciliter la découverte de la LSF grâce à une expérience progressive, ludique et adaptée au rythme d’apprentissage de chaque enfant.",
-		solution:
-			"Créer une application web qui mêle apprentissage et jeu : leçons, vidéos, histoires, quiz et mini-jeux permettent de découvrir progressivement les signes dans un univers accompagné par Zozzo.",
-		development:
-			"J’ai participé à la conception de l’expérience utilisateur, à la création de l’identité visuelle et au développement de l’interface de l’application, avec l’intégration de PocketBase pour les comptes, les scores et la progression.",
-		tech: ['Astro', 'Tailwind CSS', 'PocketBase', 'JavaScript / TypeScript'],
-		skills: [
-			'Développement d’interfaces',
-			'Conception UI/UX',
-			'Interfaces adaptatives',
-			'Base de données',
-			'Conception d’interfaces',
-			'Accessibilité',
-			'Prototypage',
-			'Git',
-		],
-		features: [
-			'Leçons de LSF',
-			'Dictionnaire de signes',
-			'Vidéos',
-			'Histoires',
-			'Quiz',
-			'Mini-jeux',
-			'Progression',
-			'Scores',
-			'Profils utilisateurs',
-		],
+		card: {
+			type: 'Application web éducative',
+			goal: 'Apprendre la LSF aux enfants',
+			features: ['Leçons', 'Quiz', 'Dictionnaire', 'Histoires', 'Mini-jeux'],
+			stack: ['Astro', 'Tailwind', 'PocketBase'],
+		},
+		pitch: 'Une application web pour faire découvrir la Langue des Signes Française aux enfants de 6 à 12 ans.',
+		need: 'La Langue des Signes Française reste peu connue et peu enseignée aux enfants entendants.',
+		answer:
+			'Une application qui mêle apprentissage et jeu : leçons, vidéos, histoires, quiz et mini-jeux, avec Zozzo pour guide.',
 		role: 'Développement & conception UI/UX',
-		liveUrl: 'https://zozzo.fr',
+		tech: ['Astro', 'Tailwind CSS', 'PocketBase', 'JavaScript / TypeScript'],
+		cover: '/zozzo/cover.avif',
+		live: {
+			url: 'https://zozzo.fr',
+			image: '/zozzo/site-en-ligne.webp',
+			alt: 'Page d’accueil de zozzo.fr : « Apprendre la langue des signes aux enfants », avec le personnage Zozzo et le bouton Télécharger ZOZZO.',
+		},
 		githubUrl: 'https://github.com/ayyobi/zozzo-on-fire',
+		code: {
+			file: 'index.astro',
+			source: `---
+// src/pages/index.astro — extrait simplifié
+import Layout from '../layouts/Layout.astro';
+import Zozzo from '../components/Zozzo.astro';
+---
+<Layout title="ZOZZO">
+  <header class="nav">
+    <a href="/a-propos">À propos</a>
+    <a href="/contacts">Contacts</a>
+    <a class="btn" href="/inscription">Essayer gratuitement</a>
+  </header>
+  <section class="hero">
+    <Zozzo pose="coucou" />
+    <h1>Apprendre la langue des signes aux enfants</h1>
+    <p>Des histoires qui valent plus que des mots.</p>
+    <a class="btn-orange" href="/telecharger">Télécharger ZOZZO</a>
+    <small>Pensée pour les enfants de 6 à 12 ans</small>
+  </section>
+</Layout>`,
+		},
+		palette: ['#2445d8', '#ed8543', '#6ad0b2', '#d6dc7a', '#87a4f1'],
 	},
 	{
 		slug: 'washroll',
 		number: '02',
 		name: 'WASHROLL',
-  "cover": "/washroll/cover-landscape.png",
-  "images": {
-    "context": {
-      "src": "/washroll/landing_page.avif",
-      "alt": "Page complète de Washroll présentant la réservation à distance et les différents états des machines.",
-      "width": 3024,
-      "height": 5760,
-      "caption": "La page de présentation de Washroll et du service de réservation.",
-      "presentation": "page"
-    },
-    "objectives": [
-      {
-        "src": "/washroll/home.avif",
-        "alt": "Accueil mobile de Washroll avec les accès aux machines et aux réservations.",
-        "width": 804,
-        "height": 1748,
-        "caption": "Accéder aux machines, aux réservations et à leur historique.",
-        "presentation": "mobile"
-      },
-      {
-        "src": "/washroll/machine-2.avif",
-        "alt": "Liste mobile des machines de laverie avec leurs états affichés en couleur.",
-        "width": 804,
-        "height": 1748,
-        "caption": "Repérer les machines disponibles, réservées ou hors service.",
-        "presentation": "mobile"
-      }
-    ],
-    "ui": [
-      {
-        "src": "/washroll/machine.avif",
-        "alt": "Écran mobile de réservation avec une machine, un calendrier, un récapitulatif et les boutons Annuler et Valider.",
-        "width": 804,
-        "height": 2876,
-        "caption": "Choisir une machine, une date et un créneau.",
-        "presentation": "mobile"
-      }
-    ],
-    "result": {
-      "src": "/washroll/reservation.avif",
-      "alt": "Page mobile des réservations Washroll avec les réservations à venir et leur historique.",
-      "width": 804,
-      "height": 1748,
-      "caption": "Retrouver les réservations à venir et les précédentes.",
-      "presentation": "mobile"
-    }
-  },
 		year: '2025',
-		card: { type: 'Application web', goal: 'Simplifier l’utilisation de la laverie CROUS', features: ['Réservation', 'Créneaux', 'Rappels', 'Lave-linge', 'Sèche-linge'], stack: ['Astro', 'Tailwind', 'PocketBase'] },
 		category: 'Développement web · UI/UX',
-		summary:
-			'WASHROLL est une application web imaginée pour faciliter l’utilisation des machines de laverie dans une résidence étudiante. Sans elle, les étudiants descendent parfois jusqu’à la laverie pour découvrir que les machines sont déjà utilisées.',
-		audience: 'Étudiants d’une résidence universitaire.',
-		problem:
-			'Les étudiants peuvent descendre jusqu’à la laverie et découvrir que les machines sont déjà utilisées.',
-		objective:
-			'Permettre aux étudiants de consulter la disponibilité des machines et réserver un créneau à l’avance.',
-		tech: ['Astro', 'Tailwind CSS', 'PocketBase'],
-		skills: ['Développement web', 'UI/UX', 'Base de données', 'Interfaces adaptatives'],
-		features: [
-			'Connexion utilisateur',
-			'Consultation des machines',
-			'Réservation d’un créneau',
-			'Calendrier',
-			'Confirmation',
-			'Historique des réservations',
-			'Gestion du temps / créneau',
-		],
+		card: {
+			type: 'Application web',
+			goal: 'Simplifier l’utilisation de la laverie CROUS',
+			features: ['Réservation', 'Créneaux', 'Rappels', 'Lave-linge', 'Sèche-linge'],
+			stack: ['Astro', 'Tailwind', 'PocketBase'],
+		},
+		pitch:
+			'Une application web pour voir les machines libres de la laverie d’une résidence étudiante et réserver un créneau.',
+		need: 'Les étudiants descendent jusqu’à la laverie et découvrent que les machines sont déjà utilisées.',
+		answer:
+			'Les machines et leur état en temps réel, un calendrier pour réserver un créneau et l’historique de ses réservations.',
 		role: 'Développement & conception UI/UX',
-		liveUrl: 'https://washroll.ayyobi.fr',
+		tech: ['Astro', 'Tailwind CSS', 'PocketBase'],
+		cover: '/washroll/cover.webp',
+		live: {
+			url: 'https://washroll.ayyobi.fr',
+			image: '/washroll/site-en-ligne.webp',
+			alt: 'Page d’accueil de washroll.ayyobi.fr : « Réserve ta machine sans te déplacer », avec l’illustration d’une machine à laver.',
+		},
 		githubUrl: 'https://github.com/ayyobi/washroll',
+		code: {
+			file: 'index.astro',
+			source: `---
+// src/pages/index.astro — extrait simplifié
+import Layout from '../layouts/Layout.astro';
+import Machine from '../components/Machine.astro';
+---
+<Layout title="WASHROLL">
+  <section class="hero">
+    <Machine etat="libre" />
+    <h1>Réserve ta machine sans te déplacer</h1>
+    <p>Consulte les machines en temps réel et réserve ton créneau.</p>
+    <a class="btn" href="/inscription">Commencez</a>
+    <a class="btn-ghost" href="/machines">Voir les machines</a>
+    <ul class="atouts">
+      <li>En direct</li>
+      <li>Rapide</li>
+      <li>Par des étudiants</li>
+    </ul>
+  </section>
+</Layout>`,
+		},
+		palette: ['#ed5d89', '#4fa89a', '#f6c945', '#a4ded2', '#e28f8d'],
 	},
 	{
 		slug: 'olyvia',
 		number: '03',
 		name: 'OLYVIA',
-  "cover": "/olyvia/cover-landscape.png",
-  "images": {
-    "context": {
-      "src": "/olyvia/chatgpt_image_28_mai_2026__15_00_45-removebg-preview1%20(1).avif",
-      "alt": "Présentation du site Olyvia sur trois appareils : ordinateur portable, tablette et téléphone.",
-      "width": 1642,
-      "height": 820,
-      "caption": "Olyvia sur ordinateur, tablette et mobile."
-    },
-    "objectives": [
-      {
-        "src": "/olyvia/captured'%C3%A9cran2026-05-280216101.avif",
-        "alt": "Grille de neuf thématiques illustrées : fatigue, bouffées de chaleur, sommeil, alimentation et autres sujets autour de la ménopause.",
-        "width": 1108,
-        "height": 944,
-        "caption": "Des thématiques pour comprendre la ménopause."
-      },
-      {
-        "src": "/olyvia/captured'%C3%A9cran2026-05-280216311.avif",
-        "alt": "Liste des articles Olyvia sur les symptômes, dont les difficultés de concentration, les douleurs articulaires et la fatigue.",
-        "width": 1304,
-        "height": 1004,
-        "caption": "Accéder aux articles consacrés aux symptômes."
-      }
-    ],
-    "ui": [
-      {
-        "src": "/olyvia/captured'%C3%A9cran2026-05-280217481.avif",
-        "alt": "Page Conseils et Bien-être avec des articles sur l’activité physique, l’alimentation et le sommeil.",
-        "width": 810,
-        "height": 630,
-        "caption": "Une rubrique de conseils pour le bien-être au quotidien."
-      },
-      {
-        "src": "/olyvia/captured'%C3%A9cran2026-05-280220511.avif",
-        "alt": "Page de la communauté Olyvia avec son bandeau de présentation et les discussions du forum.",
-        "width": 1084,
-        "height": 982,
-        "caption": "Un forum pour échanger au sein de la communauté."
-      }
-    ],
-    "result": {
-      "src": "/olyvia/captured'%C3%A9cran2026-05-280221121.avif",
-      "alt": "Formulaire d’inscription au forum Olyvia avec les champs identifiant, adresse e-mail et les conditions d’inscription.",
-      "width": 1276,
-      "height": 608,
-      "caption": "Le formulaire pour rejoindre la communauté."
-    }
-  },
-		card: { type: 'Plateforme web', goal: 'Informer et accompagner autour de la ménopause', features: ['Symptômes', 'Communauté Q/R', 'Articles', 'FAQ', 'Témoignages'], stack: ['WordPress', 'Figma'] },
 		year: '2025',
 		category: 'UI/UX · Identité visuelle · projet d’équipe',
-		summary:
-			'OLYVIA est une plateforme web réalisée en équipe autour de la ménopause : informations sur les symptômes, articles, témoignages et un espace d’échange.',
-		audience: 'Femmes de 40 à 55 ans.',
-		objective:
-			'Informer, accompagner et créer un espace d’échange autour de la ménopause.',
-		tech: ['WordPress', 'Figma', 'Extensions WordPress', 'Outils de conception graphique'],
-		skills: [
-			'UI/UX',
-			'Conception web',
-			'WordPress',
-			'Identité visuelle',
-			'Communication',
-			'Travail en équipe',
-		],
-		features: [
-			'Informations sur les symptômes',
-			'Articles',
-			'FAQ',
-			'Témoignages',
-			'Communauté',
-			'Questions / réponses',
-			'Page de contact',
-		],
+		card: {
+			type: 'Plateforme web',
+			goal: 'Informer et accompagner autour de la ménopause',
+			features: ['Symptômes', 'Communauté Q/R', 'Articles', 'FAQ', 'Témoignages'],
+			stack: ['WordPress', 'Figma'],
+		},
+		pitch: 'Une plateforme web réalisée en équipe pour informer et accompagner les femmes autour de la ménopause.',
+		need: 'Les femmes de 40 à 55 ans ont besoin d’informations fiables et d’un lieu pour échanger sur la ménopause.',
+		answer: 'Un site WordPress avec les symptômes expliqués, des articles, des témoignages et un forum d’entraide.',
 		role: 'UI/UX & identité visuelle — projet d’équipe',
-		liveUrl: 'https://olyvia.ayyobi.fr',
+		tech: ['WordPress', 'Figma'],
+		cover: '/olyvia/cover.webp',
+		live: {
+			url: 'https://olyvia.ayyobi.fr',
+			image: '/olyvia/site-en-ligne.webp',
+			alt: 'Page d’accueil de olyvia.ayyobi.fr : « OLYVIA, un espace rassurant pour toutes les femmes qui veulent souffler et avancer ».',
+		},
+		code: {
+			file: 'accueil.html — WordPress',
+			source: `<!-- page d'accueil — extrait simplifié -->
+<!-- wp:cover {"dimRatio":40} -->
+<div class="wp-block-cover">
+  <!-- wp:heading {"level":1} -->
+  <h1>OLYVIA, un espace rassurant pour toutes
+    les femmes qui veulent souffler et avancer</h1>
+  <!-- /wp:heading -->
+  <!-- wp:paragraph -->
+  <p>Traverser la ménopause sereinement, ensemble</p>
+  <!-- /wp:paragraph -->
+  <!-- wp:buttons -->
+  <a class="wp-block-button__link" href="/communaute">
+    Rejoindre la communauté
+  </a>
+  <!-- /wp:buttons -->
+</div>
+<!-- /wp:cover -->`,
+		},
+		palette: ['#c196ee', '#f290b2', '#f1b09c', '#98b4f5', '#dea5cb'],
 	},
 ];
-
-export function getProject(slug: string) {
-	return projects.find((project) => project.slug === slug);
-}
 
 export function getNextProject(slug: string) {
 	const index = projects.findIndex((project) => project.slug === slug);

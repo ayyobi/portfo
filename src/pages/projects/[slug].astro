@@ -1,0 +1,23 @@
+---
+// Une seule page pour toutes les études de cas : une route par projet de `data/projects.ts`.
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/layout/Header.astro';
+import Footer from '../../components/layout/Footer.astro';
+import ProjectCaseStudy from '../../components/project/ProjectCaseStudy.astro';
+import { projects, getNextProject, type Project } from '../../data/projects';
+
+export function getStaticPaths() {
+	return projects.map((project) => ({ params: { slug: project.slug }, props: { project } }));
+}
+
+const { project } = Astro.props as { project: Project };
+const next = getNextProject(project.slug);
+---
+
+<Layout title={`${project.name} — Nargis Ayyobi`} description={project.pitch}>
+	<Header />
+	<main id="top">
+		<ProjectCaseStudy project={project} next={next} />
+	</main>
+	<Footer />
+</Layout>

@@ -1,5 +1,5 @@
 ---
-import type { ProjectImage } from '../data/projects';
+import type { ProjectImage } from '../../data/projects';
 
 interface Props {
 	image: ProjectImage;
@@ -8,12 +8,17 @@ interface Props {
 const { image } = Astro.props;
 ---
 
-<figure data-tilt class:list={[
-	'mx-auto min-w-0 w-full',
-	{ 'max-w-[240px]': image.presentation === 'mobile',
-	  'max-w-[420px]': image.presentation === 'page',
-	  'max-w-[640px]': !image.presentation },
-]}>
+<figure
+	data-tilt
+	class:list={[
+		'mx-auto min-w-0 w-full',
+		{
+			'max-w-[240px]': image.presentation === 'mobile',
+			'max-w-[420px]': image.presentation === 'page',
+			'max-w-[640px]': !image.presentation,
+		},
+	]}
+>
 	<img
 		src={image.src}
 		alt={image.alt}
