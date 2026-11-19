@@ -1,8 +1,3 @@
-# Utilisation de l’IA
-
-> Ce fichier déclare honnêtement comment l’IA a été utilisée dans ce portfolio, comme le demande le cahier des charges.
-> **À relire et compléter avec tes mots** avant le rendu.
-
 ## Outil utilisé
 
 - Claude (Anthropic), en conversation, avec accès à la maquette Figma et au dossier du projet.
