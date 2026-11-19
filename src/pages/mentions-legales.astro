@@ -1,7 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
 
 const email = 'ayyobinargis@gmail.com';
 const sections = [
@@ -27,7 +27,7 @@ const sections = [
 		title: 'Données personnelles',
 		lines: [
 			'Responsable du traitement : Nargis Ayyobi.',
-			`Le formulaire de contact n’enregistre rien sur ce site : il ouvre votre propre messagerie avec votre message. Les e-mails reçus servent uniquement à vous répondre ; ils ne sont ni revendus ni transmis. Pour les consulter ou les supprimer : ${email}.`,
+			`Le formulaire de contact transmet votre nom, votre e-mail et votre message à ${email} par l’intermédiaire du service Web3Forms. Ces données servent uniquement à vous répondre ; elles ne sont ni revendues ni utilisées à d’autres fins. Pour les consulter ou les supprimer : ${email}.`,
 		],
 	},
 	{
@@ -58,21 +58,21 @@ const pad = (n: number) => String(n).padStart(2, '0');
 			<p class="mt-4 text-lg text-muted sm:text-xl">Informations légales relatives au portfolio de Nargis Ayyobi.</p>
 		</div>
 
-		{
-			sections.map((s, i) => (
-				<section class="block" aria-labelledby={`ml-${i}`}>
-					<p class="num" aria-hidden="true">{pad(i + 1)}</p>
-					<div>
-						<h2 id={`ml-${i}`} class="font-sans text-3xl font-semibold sm:text-5xl">
-							{pad(i + 1)} — {s.title}
-						</h2>
-						{s.lines.map((l) => (
-							<p class="mt-4 max-w-[48rem] leading-relaxed">{l}</p>
-						))}
-					</div>
-				</section>
-			))
-		}
+		{sections.map((s, i) => (
+			<section class="block" aria-labelledby={`ml-${i}`}>
+				<p class="num" aria-hidden="true">
+					{pad(i + 1)}
+				</p>
+				<div>
+					<h2 id={`ml-${i}`} class="font-sans text-3xl font-semibold sm:text-5xl">
+						{pad(i + 1)} — {s.title}
+					</h2>
+					{s.lines.map((l) => (
+						<p class="mt-4 max-w-[48rem] leading-relaxed">{l}</p>
+					))}
+				</div>
+			</section>
+		))}
 	</main>
 	<Footer />
 </Layout>

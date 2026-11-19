@@ -15,8 +15,15 @@
 	--color-sage: #a5ae8b;
 	--color-beige: #e8e1d6;
 	--color-yellow: #fbc832; /* réservé aux actions */
-	--color-accent: #fbc832;
-	--color-lilac: #ded2df;
+
+	/* nuances des fenêtres de code et de la console */
+	--color-ink-3: #1a1a1a; /* fond de console */
+	--color-line: #2c2c2c; /* bordure sur fond sombre */
+	--color-dim: #55534f; /* pointillés sur fond sombre */
+	--color-code: #77736d; /* numéros de ligne, commentaires */
+	--color-code-light: #aaa69f; /* noms de fichier */
+	--color-dot: #d9d3c7; /* grille de points du contact */
+	--color-error: #e5776b; /* champ en erreur */
 
 	--font-display: 'Lora Variable', ui-serif, Georgia, serif;
 	--font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
@@ -62,20 +69,6 @@
 	::selection {
 		background-color: var(--color-yellow);
 		color: var(--color-ink);
-	}
-
-	.grain {
-		position: relative;
-	}
-
-	.grain::after {
-		content: '';
-		position: absolute;
-		inset: 0;
-		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-		opacity: 0.08;
-		mix-blend-mode: overlay;
-		pointer-events: none;
 	}
 
 	[data-reveal] {

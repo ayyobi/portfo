@@ -1,0 +1,168 @@
+---
+// Indicateur de défilement : pendant le scroll, les deux yeux du panda fusionnent en une goutte
+// d'encre qui s'étire selon la vitesse ; au repos, la goutte redevient le panda, qui suit la souris.
+// Clic = retour en haut. L'anneau autour montre la progression dans la page.
+---
+
+<button type="button" class="sp" data-scroll-panda aria-label="Remonter en haut de la page">
+	<svg viewBox="0 0 80 80" aria-hidden="true">
+		<defs>
+			<filter id="sp-goo">
+				<feGaussianBlur stdDeviation="3" />
+				<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 20 -8" />
+			</filter>
+		</defs>
+		<circle class="ring-bg" cx="40" cy="40" r="37" />
+		<circle class="ring" cx="40" cy="40" r="37" pathLength="100" data-ring />
+		<g filter="url(#sp-goo)" data-drop>
+			<ellipse class="eye l" cx="29" cy="36" rx="8" ry="10.5" data-eye />
+			<ellipse class="eye r" cx="51" cy="36" rx="8" ry="10.5" data-eye />
+		</g>
+		<circle class="pupil" cx="29" cy="35" r="3" data-pupil />
+		<circle class="pupil" cx="51" cy="35" r="3" data-pupil />
+		<ellipse class="nose" cx="40" cy="53" rx="4.5" ry="3.2" />
+	</svg>
+	<span class="lbl" data-lbl>
+		// repos
+	</span>
+</button>
+
+<style>
+	.sp {
+		position: fixed;
+		right: 1.25rem;
+		bottom: 1.25rem;
+		z-index: 60;
+		width: 72px;
+		height: 72px;
+		border-radius: 50%;
+		background: var(--color-bg);
+		cursor: pointer;
+		opacity: 0;
+		transform: translateY(12px) scale(0.9);
+		transition:
+			opacity 0.35s,
+			transform 0.35s;
+		pointer-events: none;
+	}
+	.sp.show {
+		opacity: 1;
+		transform: none;
+		pointer-events: auto;
+	}
+	.sp:focus-visible {
+		outline: 2px solid var(--color-ink);
+		outline-offset: 4px;
+	}
+	.sp svg {
+		width: 100%;
+		height: 100%;
+		overflow: visible;
+	}
+	.ring-bg {
+		fill: none;
+		stroke: var(--color-beige);
+		stroke-width: 3;
+	}
+	.ring {
+		fill: none;
+		stroke: var(--color-ink);
+		stroke-width: 3;
+		stroke-linecap: round;
+		stroke-dasharray: 0 100;
+		transform: rotate(-90deg);
+		transform-origin: 40px 40px;
+	}
+	[data-drop] {
+		transform-origin: 40px 40px;
+		transition: transform 0.25s cubic-bezier(0.3, 1.4, 0.5, 1);
+	}
+	.eye {
+		fill: var(--color-ink);
+		transition: transform 0.35s cubic-bezier(0.3, 1.5, 0.5, 1);
+		transform-box: fill-box;
+		transform-origin: center;
+	}
+	.eye.l {
+		transform: rotate(28deg);
+	}
+	.eye.r {
+		transform: rotate(-28deg);
+	}
+	.sp.moving .eye.l {
+		transform: translateX(11px);
+	}
+	.sp.moving .eye.r {
+		transform: translateX(-11px);
+	}
+	.pupil {
+		fill: var(--color-bg);
+		transition: opacity 0.2s;
+	}
+	.nose {
+		fill: var(--color-ink);
+		transition:
+			opacity 0.2s,
+			transform 0.3s;
+		transform-box: fill-box;
+		transform-origin: center;
+	}
+	.sp.moving .pupil,
+	.sp.moving .nose {
+		opacity: 0;
+	}
+	.sp.moving .nose {
+		transform: scale(0.3);
+	}
+	.sp.blink .eye {
+		transform: scaleY(0.15) !important;
+		transition-duration: 0.1s;
+	}
+	.sp.blink .pupil {
+		opacity: 0;
+	}
+	.lbl {
+		position: absolute;
+		right: calc(100% + 0.6rem);
+		top: 50%;
+		translate: 0 -50%;
+		white-space: nowrap;
+		font: 0.72rem var(--font-mono);
+		color: var(--color-muted);
+		background: var(--color-bg);
+		padding: 0.2rem 0.5rem;
+		border-radius: 999px;
+		opacity: 0;
+		transition: opacity 0.2s;
+	}
+	.sp:hover .lbl,
+	.sp.moving .lbl {
+		opacity: 1;
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.sp,
+		.eye,
+		[data-drop],
+		.nose,
+		.pupil {
+			transition: none;
+		}
+		.sp.moving .eye.l {
+			transform: rotate(28deg);
+		}
+		.sp.moving .eye.r {
+			transform: rotate(-28deg);
+		}
+		.sp.moving .pupil,
+		.sp.moving .nose {
+			opacity: 1;
+		}
+	}
+	@media print {
+		.sp {
+			display: none;
+		}
+	}
+</style>
+
+<script src="../../scripts/layout/scroll-panda.ts"></script>

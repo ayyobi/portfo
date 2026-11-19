@@ -1,8 +1,8 @@
 ---
 import '../styles/global.css';
-import Cursor from '../components/Cursor.astro';
-import Loader from '../components/Loader.astro';
-import ScrollPanda from '../components/ScrollPanda.astro';
+import Cursor from '../components/layout/Cursor.astro';
+import Loader from '../components/layout/Loader.astro';
+import ScrollPanda from '../components/layout/ScrollPanda.astro';
 
 interface Props {
 	title?: string;
@@ -22,7 +22,7 @@ const {
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
-		<meta name="theme-color" content="#f5f3ef" />
+		<meta name="theme-color" content="#f7f4ee" />
 		<meta name="description" content={description} />
 
 		<meta property="og:type" content="website" />
@@ -47,56 +47,15 @@ const {
 			Aller au contenu
 		</a>
 		<slot />
-		<div class="ink-wave" data-wave aria-hidden="true"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><path d="" fill="#111111" /></svg></div>
+		<div class="ink-wave" data-wave aria-hidden="true">
+			<svg viewBox="0 0 100 100" preserveAspectRatio="none">
+				<path d="" fill="#111111" />
+			</svg>
+		</div>
 		<ScrollPanda />
 		<Cursor />
 	</body>
 </html>
 
-<script>
-	import '../scripts/motion';
-
-	const observer = new IntersectionObserver(
-		(entries) => {
-			for (const entry of entries) {
-				if (entry.isIntersecting) {
-					entry.target.classList.add('is-revealed');
-					observer.unobserve(entry.target);
-				}
-			}
-		},
-		{ threshold: 0.15 },
-	);
-
-	document.querySelectorAll('[data-reveal]').forEach((el) => observer.observe(el));
-
-	const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-	const parallaxEls = Array.from(document.querySelectorAll<HTMLElement>('[data-parallax]'));
-
-	if (!reduceMotion && parallaxEls.length && window.innerWidth >= 768) {
-		let ticking = false;
-
-		const updateParallax = () => {
-			const viewportH = window.innerHeight;
-			for (const el of parallaxEls) {
-				const rect = el.getBoundingClientRect();
-				const progress = (rect.top + rect.height / 2 - viewportH / 2) / viewportH;
-				const shift = Math.max(-1, Math.min(1, progress)) * -16;
-				el.style.setProperty('--parallax-y', `${shift}px`);
-			}
-			ticking = false;
-		};
-
-		updateParallax();
-		window.addEventListener(
-			'scroll',
-			() => {
-				if (!ticking) {
-					requestAnimationFrame(updateParallax);
-					ticking = true;
-				}
-			},
-			{ passive: true },
-		);
-	}
-</script>
+<script src="../scripts/motion.ts"></script>
+<script src="../scripts/layout/reveal.ts"></script>
