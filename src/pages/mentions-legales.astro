@@ -8,43 +8,50 @@ const sections = [
 	{
 		title: 'Édition du site',
 		lines: [
-			'Éditrice du site et responsable de la publication : Nargis Ayyobi, étudiante en BUT MMI.',
-			`Contact : ${email}. Site personnel, sans activité commerciale.`,
+			'Éditrice du site et directrice de la publication : Nargis Ayyobi, étudiante en BUT MMI (IUT Nord Franche-Comté, Montbéliard).',
+			`Contact : ${email}. Site personnel (portfolio), édité à titre non professionnel et sans activité commerciale.`,
 		],
 	},
 	{
 		title: 'Hébergement',
-		lines: ['Hébergeur : [À compléter — nom de l’hébergeur].', 'Adresse et téléphone de l’hébergeur : [À compléter].'],
+		lines: [
+			'Hébergeur : Infomaniak Network SA.',
+			'Adresse : rue Eugène-Marziano 25, 1227 Les Acacias (Genève), Suisse. Téléphone : +41 22 820 35 44. Site : infomaniak.com.',
+		],
 	},
 	{
 		title: 'Propriété intellectuelle',
 		lines: [
-			'Les textes, visuels, créations et éléments graphiques présentés sur ce portfolio sont protégés par le droit de la propriété intellectuelle.',
-			'Toute reproduction, adaptation ou diffusion, totale ou partielle, nécessite l’autorisation préalable de la personne titulaire des droits.',
+			'Les textes, visuels, créations et éléments graphiques présentés sur ce portfolio sont protégés par le droit de la propriété intellectuelle. Toute reproduction, adaptation ou diffusion, totale ou partielle, nécessite l’autorisation préalable de la personne titulaire des droits.',
+			'Les noms, logos et marques cités dans les projets (établissements, services, outils) appartiennent à leurs propriétaires respectifs et ne sont utilisés que pour présenter des travaux réalisés dans le cadre de ma formation.',
 		],
 	},
 	{
 		title: 'Données personnelles',
 		lines: [
-			'Responsable du traitement : Nargis Ayyobi.',
-			`Le formulaire de contact transmet votre nom, votre e-mail et votre message à ${email} par l’intermédiaire du service Web3Forms. Ces données servent uniquement à vous répondre ; elles ne sont ni revendues ni utilisées à d’autres fins. Pour les consulter ou les supprimer : ${email}.`,
+			`Responsable du traitement : Nargis Ayyobi — ${email}.`,
+			'Données collectées : votre nom, votre adresse e-mail et votre message, uniquement si vous utilisez le formulaire de contact. Ils servent seulement à vous répondre. Base légale : votre demande de contact (mesures précontractuelles prises à votre demande ou, à défaut, intérêt légitime à répondre aux messages reçus).',
+			'Destinataires : moi seule. Le message est transmis par le service Web3Forms (Web3Creative, Inde ; serveurs aux États-Unis), puis reçu dans une boîte Gmail (Google). Ces données peuvent donc être transférées hors de l’Union européenne.',
+			'Durée de conservation : le temps de l’échange, puis au plus 3 ans après le dernier contact, avant suppression.',
+			`Vos droits : vous pouvez accéder à vos données, les rectifier, les effacer, limiter leur traitement ou vous y opposer en écrivant à ${email}. Si vous estimez que vos droits ne sont pas respectés, vous pouvez adresser une réclamation à la CNIL (cnil.fr).`,
 		],
 	},
 	{
-		title: 'Cookies',
+		title: 'Cookies et stockage local',
 		lines: [
-			'Ce site ne dépose aucun cookie publicitaire ni de mesure d’audience. Il garde seulement, le temps de votre visite, une information technique dans votre navigateur (l’écran de chargement a déjà été vu).',
-			'Aucun consentement n’est donc demandé à l’arrivée sur le site.',
+			'Ce site ne dépose aucun cookie, ni publicitaire ni de mesure d’audience, et n’utilise aucun outil de suivi. Les polices sont hébergées sur le site lui-même.',
+			'Il garde seulement deux informations techniques dans votre navigateur, le temps de la visite (stockage de session, effacé à la fermeture de l’onglet) : l’écran de chargement a déjà été vu, et une transition entre deux pages est en cours. Elles ne servent qu’au fonctionnement de l’interface, c’est pourquoi aucun consentement n’est demandé.',
 		],
 	},
 	{
 		title: 'Crédits',
 		lines: [
 			'Conception, direction artistique et développement : Nargis Ayyobi.',
-			'Typographies : Inter, Lora et IBM Plex Mono (licence SIL Open Font License). Projet OLYVIA réalisé en équipe : [À compléter — membres de l’équipe]. Visuels générés avec une IA : [À préciser].',
+			'Typographies : Inter, Lora et IBM Plex Mono (licence SIL Open Font License). Animations : GSAP. Projet OLYVIA réalisé en binôme par Nargis Ayyobi et Rahma Hamdi. Certains visuels ont été réalisés à l’aide de Claude (Anthropic).',
 		],
 	},
 ];
+const updated = 'novembre 2026';
 const pad = (n: number) => String(n).padStart(2, '0');
 ---
 
@@ -56,6 +63,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
 			<p class="font-mono text-sm font-semibold text-muted">01 / INFORMATIONS</p>
 			<h1 class="mt-4 font-sans text-5xl font-bold sm:text-[64px]">Mentions légales</h1>
 			<p class="mt-4 text-lg text-muted sm:text-xl">Informations légales relatives au portfolio de Nargis Ayyobi.</p>
+			<p class="mt-2 font-mono text-sm text-muted">// dernière mise à jour : {updated}</p>
 		</div>
 
 		{sections.map((s, i) => (

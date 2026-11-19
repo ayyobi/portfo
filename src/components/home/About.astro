@@ -1,5 +1,5 @@
 ---
-// À propos : présentation, recherche de stage et vision de l'IA en « diff ».
+// À propos : présentation, devise, recherche de stage et vision de l'IA en « diff ».
 // À droite, la tête du panda de l'accueil, en encre crème : la souris disperse les taches.
 ---
 
@@ -10,10 +10,22 @@
 
 	<div class="grid">
 		<div>
-			<p data-reveal class="txt">
-				Je m’appelle Nargis. Née en Iran, j’ai grandi en Afghanistan, et j’étudie aujourd’hui en BUT MMI à Montbéliard.
-				Je conçois et je code des interfaces, de la première idée jusqu’à la dernière ligne de CSS. J’aime quand un
-				détail bien pensé rend un site plus simple pour tout le monde.
+			<p data-reveal class="hello">
+				Hello, moi c’est Nargis&nbsp;!
+			</p>
+			<div data-reveal class="txt">
+				<p>
+					Actuellement étudiante en deuxième année de BUT MMI à Montbéliard, je m’intéresse particulièrement au
+					développement web et au design UI/UX.
+				</p>
+				<p>
+					Plutôt calme, mais toujours curieuse, j’aime apprendre, expérimenter et donner vie à mes idées à travers le
+					code et la créativité.
+				</p>
+				<p>En dehors de mon écran, j’aime voyager, dessiner, faire de l’origami et découvrir de nouvelles choses.</p>
+			</div>
+			<p data-reveal class="motto" lang="en">
+				A little quiet. Always curious.
 			</p>
 			<p data-reveal class="seek">
 				// je cherche : alternance, ou stage de 2 mois dès fin mars
@@ -97,12 +109,30 @@
 	.panda.formed .eyes {
 		opacity: 1;
 	}
-	.txt {
-		max-width: 62rem;
+	.hello {
 		font-family: var(--font-display);
-		font-size: clamp(1.4rem, 2.4vw, 2rem);
-		line-height: 1.45;
+		font-size: clamp(1.9rem, 3.4vw, 2.75rem);
+		line-height: 1.2;
 		color: var(--color-bg);
+	}
+	.txt {
+		max-width: 46rem;
+		margin-top: 1.5rem;
+		font-family: var(--font-display);
+		font-size: clamp(1.15rem, 1.6vw, 1.4rem);
+		line-height: 1.6;
+		color: var(--color-bg);
+	}
+	.txt p + p {
+		margin-top: 1rem;
+	}
+	/* la devise, comme une signature (le jaune reste réservé aux actions) */
+	.motto {
+		margin-top: 1.75rem;
+		font-family: var(--font-display);
+		font-style: italic;
+		font-size: clamp(1.15rem, 1.6vw, 1.4rem);
+		color: var(--color-sage);
 	}
 	.seek {
 		margin-top: 2rem;

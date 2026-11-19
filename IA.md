@@ -1,22 +1,20 @@
-## Outil utilisé
+# Utilisation de l’IA
 
-- Claude (Anthropic), en conversation, avec accès à la maquette Figma et au dossier du projet.
+J’ai travaillé avec **Claude** (Anthropic) comme avec un binôme : je donnais la direction et je vérifiais,
+Claude m’aidait à réaliser. Voici, pour chaque partie, comment nous nous sommes réparti le travail.
 
-## Ce que l’IA a fait
-
-| Partie | Ce que l’IA a produit | Ce que j’ai fait |
+| Partie | Ce que j’ai fait | Ce que Claude a fait |
 |---|---|---|
-| Maquette Figma v2 | Propositions d’idées créatives (panda en ASCII, logo `nargıs.ayyobı`, autocomplétion, git log), mise en page dans Figma | Choix des idées gardées ou refusées, retours, corrections du contenu |
-| Code de l’accueil | Écriture des composants Astro (en-tête, accueil, cartes projet, À propos, compétences, études, contact, pied de page) d’après ma maquette | [À compléter : ce que tu as relu, testé, modifié] |
-| Pages projet | Mise en page et interactions (couverture à l’encre, pinceau aux couleurs de l’affiche) | [À compléter] |
-| Écran de chargement, panda du scroll | Code des animations | Idée et validation du rendu |
-| Textes | Descriptions courtes des compétences | [À compléter : textes relus ou réécrits avec mes mots] |
-| Captures | Captures des sites en ligne (zozzo.fr, washroll, olyvia) | Vérification |
+| **Animations et interactions** | Recherches sur CodePen et dans la documentation GSAP, choix des effets qui correspondent à mon univers (encre, panda, code) | Adaptation des effets choisis à mon site : mes couleurs, le mobile, le réglage « réduire les animations » |
+| **Code du site** | Maquette de départ, idées, demandes de modifications, tests sur ordinateur et téléphone, commits | Écriture du code des composants à partir de ma maquette, corrections après mes retours |
+| **Organisation du code** | Demande d’un projet propre et lisible, vérification du résultat | Rangement des dossiers, un script par fichier, couleurs définies une seule fois, suppression du code inutile |
+| **Maquette Figma** | Maquette v2, choix des idées gardées ou refusées | Mise à jour de la maquette v3 pour qu’elle corresponde au site final |
+| **Textes** | Mes textes (À propos, projets, parcours), relecture de tout | Aide à la rédaction (journal, mentions légales, descriptions courtes) et correction de l’orthographe |
 
-## Ce que l’IA n’a pas fait
+## Ce qui est uniquement mon travail
 
-- Les projets présentés (ZOZZO, WASHROLL, OLYVIA) sont mon travail ; l’IA ne les a pas réalisés.
-- [À compléter]
+- Mes projets : **ZOZZO**, **WASHROLL** et **OLYVIA** (OLYVIA en binôme avec Rahma Hamdi).
+- L’identité du site et toutes les décisions finales.
 
 ## Ma règle
 
